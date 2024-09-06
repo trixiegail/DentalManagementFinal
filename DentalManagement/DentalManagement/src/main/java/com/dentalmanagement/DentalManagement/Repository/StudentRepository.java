@@ -2,8 +2,7 @@ package com.dentalmanagement.DentalManagement.Repository;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+
 
 import com.dentalmanagement.DentalManagement.Entity.StudentEntity;
 
@@ -27,6 +26,7 @@ public interface StudentRepository extends JpaRepository<StudentEntity, Integer>
     // Filter students by department and year level
     List<StudentEntity> findByDepartmentAndYearLevel(String department, String yearLevel);
     
-    @Query("SELECT COUNT(s) FROM StudentEntity s WHERE s.studentDepartment.id = :departmentId")
-    long countByDepartmentId(@Param("departmentId") Long departmentId);
+    //Find archive students accounts
+    List<StudentEntity> findByArchivedAndFirstnameContainingIgnoreCaseOrLastnameContainingIgnoreCaseOrIdNumberContaining(
+    boolean archived, String firstName, String lastName, String idNumber);
 }

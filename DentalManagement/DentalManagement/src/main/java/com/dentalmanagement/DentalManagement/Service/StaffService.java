@@ -3,7 +3,6 @@ package com.dentalmanagement.DentalManagement.Service;
 import org.springframework.stereotype.Service;
 
 import com.dentalmanagement.DentalManagement.DTO.UserDTO;
-import com.dentalmanagement.DentalManagement.Entity.NurseEntity;
 import com.dentalmanagement.DentalManagement.Entity.OtherUserRole;
 import com.dentalmanagement.DentalManagement.Entity.StaffEntity;
 import com.dentalmanagement.DentalManagement.Repository.StaffRepository;
@@ -30,6 +29,7 @@ public class StaffService {
         staff.setFirstname(request.getFirstname());
         staff.setLastname(request.getLastname());
         staff.setBirthdate(request.getBirthdate());
+        staff.setGender(request.getGender());
         staff.setEmail(request.getEmail());
         staff.setPassword(request.getPassword());
     	staff.setRole(OtherUserRole.STAFF);
@@ -42,7 +42,7 @@ public class StaffService {
     }
     
     //update nurse
-    public StaffEntity updateStaff(int id, NurseEntity newStaffDetails) {
+    public StaffEntity updateStaff(int id, StaffEntity newStaffDetails) {
     	StaffEntity staff = staffrepo.findById(id)
     			.orElseThrow(() -> new NoSuchElementException("User " + id + " does not exist"));
     	
@@ -50,19 +50,34 @@ public class StaffService {
     	staff.setFirstname(newStaffDetails.getFirstname());
     	staff.setLastname(newStaffDetails.getLastname());
     	staff.setBirthdate(newStaffDetails.getBirthdate());
+    	staff.setGender(newStaffDetails.getGender());
     	staff.setEmail(newStaffDetails.getEmail());
     	staff.setPassword(newStaffDetails.getPassword());
     	
     	return staffrepo.save(staff);
     }
     
-    //archive staff account
-    public StaffEntity archiveAccount(int id) {
-    	StaffEntity archiveStaff = staffrepo.findById(id)
-    		.orElseThrow(() -> new NoSuchElementException("User " + id + " does not exist"));
-    	
-    	archiveStaff.setArchived(true);
-    	return staffrepo.save(archiveStaff);
+  //archive a staff
+    public StaffEntity archiveUser(int id) {
+        StaffEntity staffToArchive = staffrepo.findById(id)
+            .orElseThrow(() -> new NoSuchElementException("Staff " + id + " does not exist"));
+        
+        staffToArchive.setArchived(true); // Assuming you have an 'archived' field
+        return staffrepo.save(staffToArchive);
+    }
+    
+    //unarchive a staff
+    public StaffEntity unarchiveUser(int id) {
+        StaffEntity staffToUnarchive = staffrepo.findById(id)
+            .orElseThrow(() -> new NoSuchElementException("Staff " + id + " does not exist"));
+        
+        staffToUnarchive.setArchived(false);
+        return staffrepo.save(staffToUnarchive);
+    }
+    
+    // get all archived accounts
+    public List<StaffEntity> getAllArchiveStaffs() {
+        return staffrepo.findByArchived(true);
     }
     
   //search for staff based on letters typed

@@ -10,6 +10,7 @@ public class UserDTO {
     private String firstname;
     private String lastname;
     private String birthdate;
+    private String gender;
     private String email;
     private String password;
     private boolean archived;
@@ -21,13 +22,14 @@ public class UserDTO {
 		super();
 	}
 
-	public UserDTO(String idNumber, String firstname, String lastname, String birthdate, String email,
+	public UserDTO(String idNumber, String firstname, String lastname, String birthdate, String gender, String email,
 			String password, boolean archived, OtherUserRole role) {
 		super();
 		this.idNumber = idNumber;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.birthdate = birthdate;
+		this.gender = gender;
 		this.email = email;
 		this.password = password;
 		this.archived = archived;
@@ -65,6 +67,14 @@ public class UserDTO {
 
 	public void setBirthdate(String birthdate) {
 		this.birthdate = birthdate;
+	}
+	
+	public String getGender() {
+		return gender;
+	}
+	
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 
 	public String getEmail() {

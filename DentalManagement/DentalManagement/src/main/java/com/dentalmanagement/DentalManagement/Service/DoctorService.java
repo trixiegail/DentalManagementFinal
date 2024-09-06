@@ -26,6 +26,7 @@ public class DoctorService {
         doctor.setFirstname(request.getFirstname());
         doctor.setLastname(request.getLastname());
         doctor.setBirthdate(request.getBirthdate());
+        doctor.setGender(request.getGender());
         doctor.setEmail(request.getEmail());
         doctor.setPassword(request.getPassword());
     	doctor.setRole(OtherUserRole.DOCTOR);
@@ -47,6 +48,7 @@ public class DoctorService {
     	doctor.setFirstname(newDoctorDetails.getFirstname());
     	doctor.setLastname(newDoctorDetails.getLastname());
     	doctor.setBirthdate(newDoctorDetails.getBirthdate());
+    	doctor.setGender(newDoctorDetails.getGender());
     	doctor.setEmail(newDoctorDetails.getEmail());
     	doctor.setPassword(newDoctorDetails.getPassword());
 
@@ -59,5 +61,11 @@ public class DoctorService {
     	
     	archiveDoctor.setArchived(true);
     	return docrepo.save(archiveDoctor);
+    }
+    
+  //search for staff based on letters typed
+    public List<DoctorEntity> searchDoctor(String keyword) {
+        // Search for staff members whose first name or last name contains the keyword
+        return docrepo.findByFirstnameContainingOrLastnameContaining(keyword, keyword);
     }
 }

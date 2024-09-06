@@ -16,10 +16,8 @@ public class StudentService {
     private StudentRepository studentRepository;
 
     // Authenticate a student by idNumber and studentPassword
-    public boolean authenticate(String idNumber, String password) {
-        // Find a student by idNumber and studentPassword
-        StudentEntity student = studentRepository.findByIdNumberAndPassword(idNumber, password);
-        return student != null;
+    public StudentEntity authenticate(String idNumber, String password) {
+        return studentRepository.findByIdNumberAndPassword(idNumber, password);
     }
 
     // Create or insert student record in tblstudent
@@ -46,26 +44,33 @@ public class StudentService {
         student.setYearLevel(newStudentDetails.getYearLevel());
         student.setBirthdate(newStudentDetails.getBirthdate());
         student.setEmail(newStudentDetails.getEmail());
+        student.setGender(newStudentDetails.getGender());
         student.setPassword(newStudentDetails.getPassword());
 
         return studentRepository.save(student);
     }
 
-    // Archive a user
-    public StudentEntity archiveUser(int id, StudentEntity student) throws IllegalAccessException {
+    //archive a student
+    public StudentEntity archiveUser(int id) {
         StudentEntity studentToArchive = studentRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("User " + id + " does not exist"));
-        try {
-            if (studentToArchive != null) {
-                return studentRepository.save(studentToArchive);
-            } else {
-                // Handle the case where the user is not found (optional)
-                throw new IllegalAccessException("Student not found.");
-            }
-        } catch (NoSuchElementException ex) {
-            // throw the exception if the student does not exist
-            throw new NoSuchElementException("Student " + id + " does not exist");
-        }
+            .orElseThrow(() -> new NoSuchElementException("Student " + id + " does not exist"));
+        
+        studentToArchive.setArchived(true); // Assuming you have an 'archived' field
+        return studentRepository.save(studentToArchive);
+    }
+    
+    //unarchive a student
+    public StudentEntity unarchiveUser(int id) {
+        StudentEntity studentToUnarchive = studentRepository.findById(id)
+            .orElseThrow(() -> new NoSuchElementException("Student " + id + " does not exist"));
+        
+        studentToUnarchive.setArchived(false);
+        return studentRepository.save(studentToUnarchive);
+    }
+    
+    // get all archived accounts
+    public List<StudentEntity> getAllArchiveStudents() {
+        return studentRepository.findByArchived(true);
     }
 
     // Search students by first name, last name, or ID number

@@ -29,6 +29,9 @@ public class StaffEntity {
 	@Column(name = "birthdate")
 	private String birthdate;
 	
+	@Column(name = "gender")
+	private String gender;
+	
 	@Column(name = "email")
 	private String email;
 	
@@ -46,13 +49,14 @@ public class StaffEntity {
 		super();
 	}
 
-	public StaffEntity(String idNumber, String firstname, String lastname, String birthdate,
+	public StaffEntity(String idNumber, String firstname, String lastname, String birthdate, String gender,
 			String email, String password, boolean archived, OtherUserRole role) {
 		super();
 		this.idNumber = idNumber;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.birthdate = birthdate;
+		this.gender = gender;
 		this.email = email;
 		this.password = password;
 		this.archived = archived;
@@ -89,6 +93,14 @@ public class StaffEntity {
 
 	public void setBirthdate(String birthdate) {
 		this.birthdate = birthdate;
+	}
+	
+	public String getGender() {
+		return gender;
+	}
+	
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 
 	public String getEmail() {

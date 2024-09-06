@@ -12,7 +12,7 @@ import com.dentalmanagement.DentalManagement.Service.AdminService;
 
 @RestController
 @RequestMapping("/dentalmanagement")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:5173/")
 public class AdminController {
 
     private final AdminService adminService;

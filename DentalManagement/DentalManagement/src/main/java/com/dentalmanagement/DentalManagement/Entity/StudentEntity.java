@@ -5,8 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -40,22 +38,21 @@ public class StudentEntity {
 	@Column(name = "student_email")
 	private String email;
 	
+	@Column(name = "gender")
+	private String gender;
+	
 	@Column(name = "student_password")
 	private String password;
 	
 	@Column(name = "archived_accounts")
 	private boolean archived;
-	
-	@ManyToOne
-    @JoinColumn(name = "department_id")
-    private DepartmentEntity studentDepartment;
 
 	public StudentEntity() {
 		super();
 	}
 
 	public StudentEntity(String idNumber, String firstname, String lastname, String department, String program,
-			String yearLevel, String birthdate, String email, String password, boolean archived) {
+			String yearLevel, String birthdate, String email, String gender, String password, boolean archived) {
 		super();
 		this.idNumber = idNumber;
 		this.firstname = firstname;
@@ -65,6 +62,7 @@ public class StudentEntity {
 		this.yearLevel = yearLevel;
 		this.birthdate = birthdate;
 		this.email = email;
+		this.gender = gender;
 		this.password = password;
 		this.archived = archived;
 	}
@@ -131,6 +129,14 @@ public class StudentEntity {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 
 	public String getPassword() {
