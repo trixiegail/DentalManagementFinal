@@ -1,4 +1,4 @@
-package com.dentalmanagement.DentalManagement.Entity;
+	package com.dentalmanagement.DentalManagement.Entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
