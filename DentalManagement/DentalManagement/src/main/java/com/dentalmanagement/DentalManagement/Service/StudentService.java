@@ -10,10 +10,11 @@ import com.dentalmanagement.DentalManagement.Entity.StudentEntity;
 import com.dentalmanagement.DentalManagement.Repository.StudentRepository;
 
 @Service
-public class StudentService {
+public class StudentService{
 
     @Autowired
     private StudentRepository studentRepository;
+
 
     // Authenticate a student by idNumber and studentPassword
     public StudentEntity authenticate(String idNumber, String password) {

@@ -29,4 +29,5 @@ public interface StudentRepository extends JpaRepository<StudentEntity, Integer>
     //Find archive students accounts
     List<StudentEntity> findByArchivedAndFirstnameContainingIgnoreCaseOrLastnameContainingIgnoreCaseOrIdNumberContaining(
     boolean archived, String firstName, String lastName, String idNumber);
+
 }
