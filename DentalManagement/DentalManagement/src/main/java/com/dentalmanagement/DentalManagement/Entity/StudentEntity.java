@@ -1,11 +1,6 @@
 package com.dentalmanagement.DentalManagement.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 
 @Entity
@@ -48,6 +43,28 @@ public class StudentEntity{
 	@Column(name = "archived_accounts")
 	private boolean archived;
 
+	@Basic(fetch = FetchType.LAZY)
+	@Column(columnDefinition = "LONGBLOB")
+	private byte[]studentProfile;
+
+
+	private String profilePictureName;
+
+	public String getProfilePictureName() {
+		return profilePictureName;
+	}
+
+	public void setProfilePictureName(String profilePictureName){
+		this.profilePictureName = profilePictureName;
+	}
+
+	public byte[] getStudentProfile() {
+		return studentProfile;
+	}
+
+	public void setStudentProfile(byte[] studentProfile) {
+		this.studentProfile = studentProfile;
+	}
 	public StudentEntity() {
 		super();
 	}

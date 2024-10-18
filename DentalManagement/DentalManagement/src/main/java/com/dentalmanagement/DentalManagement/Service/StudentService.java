@@ -1,13 +1,17 @@
 package com.dentalmanagement.DentalManagement.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import com.dentalmanagement.DentalManagement.Util.ImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dentalmanagement.DentalManagement.Entity.StudentEntity;
 import com.dentalmanagement.DentalManagement.Repository.StudentRepository;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class StudentService{
@@ -93,5 +97,43 @@ public class StudentService{
     }
 	public List<StudentEntity> searchStudentsByDepartmentAndYear(String department, String yearLevel) {
         return studentRepository.findByDepartmentAndYearLevel(department, yearLevel);
+    }
+
+    @Transactional
+    public String uploadImage(int id, MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("File is empty");
+        }
+        try {
+            StudentEntity student = studentRepository.findById(id)
+                    .orElseThrow(() -> new NoSuchElementException("Student " + id + " does not exist"));
+
+            byte[] compressedImage = ImageUtils.compressImage(file.getBytes());
+            student.setProfilePictureName(file.getOriginalFilename());
+            student.setStudentProfile(compressedImage);
+            studentRepository.save(student);
+            return "Uploaded user image successfully";
+
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read the image data", e);
+        }
+    }
+
+
+
+
+    public String getPictureFormat(int id){
+        StudentEntity student = studentRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Student " + id + " does not exist"));
+        String pictureName = student.getProfilePictureName();
+        return pictureName.substring(pictureName.lastIndexOf(".") + 1);
+    }
+
+
+    @Transactional(readOnly = true)
+    public byte[] downloadStudentImage(int id){
+        StudentEntity student = studentRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Student " + id + " does not exist"));
+        return ImageUtils.decompressImage(student.getStudentProfile());
     }
 }

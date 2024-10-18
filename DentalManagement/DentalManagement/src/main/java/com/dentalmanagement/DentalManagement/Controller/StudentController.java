@@ -1,5 +1,6 @@
 package com.dentalmanagement.DentalManagement.Controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -15,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
 
 import com.dentalmanagement.DentalManagement.Entity.StudentEntity;
 import com.dentalmanagement.DentalManagement.Repository.StudentRepository;
 import com.dentalmanagement.DentalManagement.Service.StudentService;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/user")
@@ -125,5 +128,49 @@ public class StudentController {
     public ResponseEntity<List<StudentEntity>> searchStudentsByYearLevel(@RequestParam String yearLevel) {
         List<StudentEntity> students = studservice.searchStudentsByYearLevel(yearLevel);
         return ResponseEntity.ok(students);
+    }
+
+    @PostMapping("/students/uploadProfilePicture/{studentId}")
+    public ResponseEntity<?> uploadProfilePicture(@PathVariable int studentId,@RequestParam("image") MultipartFile file){
+        return new ResponseEntity<>(studservice.uploadImage(studentId, file), HttpStatus.OK);
+    }
+
+    @GetMapping("/getProfilePicture/{userId}")
+    public ResponseEntity<?> getProfilePicture(@PathVariable int userId) throws IOException {
+
+        String format = studservice.getPictureFormat(userId);
+
+        MediaType mediaType;
+
+        switch (format) {
+            case "png":
+                mediaType = MediaType.IMAGE_PNG;
+                break;
+            case "jpg":
+            case "jpeg":
+            case "jfif":
+                mediaType = MediaType.IMAGE_JPEG;
+                break;
+            case "gif":
+                mediaType = MediaType.IMAGE_GIF;
+                break;
+            case "bmp":
+                mediaType = MediaType.valueOf("image/bmp");
+                break;
+            case "tiff":
+                mediaType = MediaType.valueOf("image/tiff");
+                break;
+            case "webp":
+                mediaType = MediaType.valueOf("image/webp");
+                break;
+            case "svg":
+                mediaType = MediaType.valueOf("image/svg+xml");
+                break;
+            default:
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unsupported Format: " + format);
+        }
+        byte[] profilePicture = studservice.downloadStudentImage(userId);
+        return ResponseEntity.status(HttpStatus.OK).contentType(mediaType).body(profilePicture);
+
     }
 }
