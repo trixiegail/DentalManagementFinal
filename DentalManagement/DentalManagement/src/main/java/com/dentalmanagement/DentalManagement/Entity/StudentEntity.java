@@ -47,7 +47,6 @@ public class StudentEntity{
 	@Column(columnDefinition = "LONGBLOB")
 	private byte[]studentProfile;
 
-
 	private String profilePictureName;
 
 	public String getProfilePictureName() {

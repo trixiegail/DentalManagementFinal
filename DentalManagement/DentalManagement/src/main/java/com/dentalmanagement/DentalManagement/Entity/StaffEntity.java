@@ -1,13 +1,6 @@
 package com.dentalmanagement.DentalManagement.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name="tablestaff")
@@ -41,10 +34,32 @@ public class StaffEntity {
 	@Column(name = "archived_accounts")
 	private boolean archived;
 	
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role")
-    private OtherUserRole role;
-	
+//    @Enumerated(EnumType.STRING)
+//    @Column(name = "role")
+//    private OtherUserRole role;
+
+	@Basic(fetch = FetchType.LAZY)
+	@Column(columnDefinition = "LONGBLOB")
+	private byte[]staffProfile;
+
+	private String profilePictureName;
+
+	public String getProfilePictureName() {
+		return profilePictureName;
+	}
+
+	public void setProfilePictureName(String profilePictureName){
+		this.profilePictureName = profilePictureName;
+	}
+
+	public byte[] getStaffProfile() {
+		return staffProfile;
+	}
+
+	public void setStaffProfile(byte[] staffProfile) {
+		this.staffProfile = staffProfile;
+	}
+
 	public StaffEntity() {
 		super();
 	}
@@ -60,7 +75,7 @@ public class StaffEntity {
 		this.email = email;
 		this.password = password;
 		this.archived = archived;
-		this.role = role;
+//		this.role = role;
 	}
 
 	public String getIdNumber() {
@@ -126,15 +141,14 @@ public class StaffEntity {
 	public void setArchived(boolean archive) {
 		this.archived = archive;
 	}
-	
-	public OtherUserRole getRole() {
-		return role;
-	}
-
-
-	public void setRole(OtherUserRole role) {
-		this.role = role;
-	}
+//	public OtherUserRole getRole() {
+//		return role;
+//	}
+//
+//
+//	public void setRole(OtherUserRole role) {
+//		this.role = role;
+//	}
 	public long getId() {
         return id;
     }

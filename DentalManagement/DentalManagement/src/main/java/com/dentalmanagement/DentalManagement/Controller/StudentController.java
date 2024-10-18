@@ -24,7 +24,7 @@ import com.dentalmanagement.DentalManagement.Service.StudentService;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/student")
 @CrossOrigin(origins = "http://localhost:5173/")
 public class StudentController {
     @Autowired
@@ -33,7 +33,7 @@ public class StudentController {
     
     // Endpoint for student authentication
     @PostMapping("/login")
-    public ResponseEntity<StudentEntity> login(@RequestBody StudentEntity loginRequest) {
+    public ResponseEntity<StudentEntity> authenticate(@RequestBody StudentEntity loginRequest) {
         StudentEntity student = studservice.authenticate(loginRequest.getIdNumber(), loginRequest.getPassword());
         if (student != null) {
             return ResponseEntity.ok(student);
@@ -49,7 +49,7 @@ public class StudentController {
     }
     
     // Read all student records in tblstudent
-    @GetMapping("/students")
+    @GetMapping("/getAllStudents")
     public List<StudentEntity> getAllStudents(){
         return studservice.getAllStudents();
     }
@@ -74,7 +74,7 @@ public class StudentController {
     }
     
     //unarchive a student
-    @PostMapping("/students/unarchive/{id}")
+    @PostMapping("/unarchiveStudent/{id}")
     public ResponseEntity<?> unarchiveUser(@PathVariable int id) {
         try {
             StudentEntity unarchivedStudent = studservice.unarchiveUser(id);
@@ -87,14 +87,14 @@ public class StudentController {
     }
     
     //get all archived accounts
-    @GetMapping("/students/archived")
+    @GetMapping("/archivedStudents")
     public ResponseEntity<List<StudentEntity>> getArchivedStudents() {
         List<StudentEntity> archivedStudents = studservice.getAllArchiveStudents();
         return ResponseEntity.ok(archivedStudents);
     }
     
     //search for archive accounts of students
-    @GetMapping("/students/search/archived")
+    @GetMapping("/search/archivedStudents")
     public ResponseEntity<List<StudentEntity>> searchArchivedStudents(@RequestParam String keyword) {
         List<StudentEntity> archivedStudents = studrepo.findByArchivedAndFirstnameContainingIgnoreCaseOrLastnameContainingIgnoreCaseOrIdNumberContaining(
         		true, keyword, keyword, keyword);
@@ -102,14 +102,14 @@ public class StudentController {
     }
 
     // Search for students by keyword
-    @GetMapping("/students/search")
+    @GetMapping("/searchStudents")
     public ResponseEntity<List<StudentEntity>> searchStudents(@RequestParam String keyword) {
         List<StudentEntity> students = studservice.searchStudents(keyword);
         return ResponseEntity.ok(students);
     }
 
     // Search for students by department
-	@GetMapping("/students/searchByDepartmentAndYear")
+	@GetMapping("/searchByDepartmentAndYear")
 	public ResponseEntity<List<StudentEntity>> searchStudentsByDepartmentAndYear(
 		@RequestParam String department,
 		@RequestParam String yearLevel
@@ -117,20 +117,20 @@ public class StudentController {
 		List<StudentEntity> students = studservice.searchStudentsByDepartmentAndYear(department, yearLevel);
 		return ResponseEntity.ok(students);
 	}
-	@GetMapping("/students/searchByDepartment")
+	@GetMapping("/searchByDepartment")
 	public ResponseEntity<List<StudentEntity>> searchStudentsByDepartment(@RequestParam String department) {
     	List<StudentEntity> students = studservice.searchStudentsByDepartment(department);
     	return ResponseEntity.ok(students);
 	}	
 	
     // Search for students by year level
-    @GetMapping("/students/searchByYearLevel")
+    @GetMapping("/searchByYearLevel")
     public ResponseEntity<List<StudentEntity>> searchStudentsByYearLevel(@RequestParam String yearLevel) {
         List<StudentEntity> students = studservice.searchStudentsByYearLevel(yearLevel);
         return ResponseEntity.ok(students);
     }
 
-    @PostMapping("/students/uploadProfilePicture/{studentId}")
+    @PostMapping("/uploadProfilePicture/{studentId}")
     public ResponseEntity<?> uploadProfilePicture(@PathVariable int studentId,@RequestParam("image") MultipartFile file){
         return new ResponseEntity<>(studservice.uploadImage(studentId, file), HttpStatus.OK);
     }

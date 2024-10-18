@@ -1,13 +1,6 @@
 package com.dentalmanagement.DentalManagement.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "tablenurse")
@@ -40,14 +33,39 @@ public class NurseEntity {
     @Column(name = "archived_accounts")
     private boolean archived;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role")
-    private OtherUserRole role;
-    
-    
-	public NurseEntity() {
-		this.role = OtherUserRole.NURSE;
+	@Basic(fetch = FetchType.LAZY)
+	@Column(columnDefinition = "LONGBLOB")
+	private byte[]nurseProfile;
+
+	private String profilePictureName;
+
+	public String getProfilePictureName() {
+		return profilePictureName;
 	}
+
+	public void setProfilePictureName(String profilePictureName){
+		this.profilePictureName = profilePictureName;
+	}
+
+	public byte[] getNurseProfile() {
+		return nurseProfile;
+	}
+
+	public void setNurseProfile(byte[] nurseProfile) {
+		this.nurseProfile = nurseProfile;
+	}
+
+	public NurseEntity() {
+		super();
+	}
+//    @Enumerated(EnumType.STRING)
+//    @Column(name = "role")
+//    private OtherUserRole role;
+    
+//
+//	public NurseEntity() {
+//		this.role = OtherUserRole.NURSE;
+//	}
 
 
 	public NurseEntity(String idNumber, String firstname, String lastname, String birthdate, String gender, String email,
@@ -61,7 +79,7 @@ public class NurseEntity {
 		this.email = email;
 		this.password = password;
 		this.archived = archived;
-		this.role = role;
+//		this.role = role;
 	}
 
 
@@ -143,14 +161,14 @@ public class NurseEntity {
 	}
 
 
-	public OtherUserRole getRole() {
-		return role;
-	}
-
-
-	public void setRole(OtherUserRole role) {
-		this.role = role;
-	}
+//	public OtherUserRole getRole() {
+//		return role;
+//	}
+//
+//
+//	public void setRole(OtherUserRole role) {
+//		this.role = role;
+//	}
 	public long getId() {
         return id;
     }
