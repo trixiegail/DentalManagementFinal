@@ -31,6 +31,8 @@ public class StudentController {
     StudentService studservice;
     StudentRepository studrepo;
     
+    //:)
+    
     // Endpoint for student authentication
     @PostMapping("/login")
     public ResponseEntity<StudentEntity> authenticate(@RequestBody StudentEntity loginRequest) {
