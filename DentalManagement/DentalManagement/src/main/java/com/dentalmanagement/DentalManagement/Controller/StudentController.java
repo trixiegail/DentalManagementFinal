@@ -29,6 +29,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class StudentController {
     @Autowired
     StudentService studservice;
+
+    @Autowired
     StudentRepository studrepo;
     
     // Endpoint for student authentication
@@ -92,12 +94,20 @@ public class StudentController {
         List<StudentEntity> archivedStudents = studservice.getAllArchiveStudents();
         return ResponseEntity.ok(archivedStudents);
     }
-    
+
+    //get all non-archived accounts
+    @GetMapping("/nonArchivedStudents")
+    public ResponseEntity<List<StudentEntity>> getNonArchivedStudents() {
+        List<StudentEntity> nonArchivedStudents = studservice.getNonArchivedStudents();
+        return ResponseEntity.ok(nonArchivedStudents);
+    }
+
+
     //search for archive accounts of students
     @GetMapping("/search/archivedStudents")
     public ResponseEntity<List<StudentEntity>> searchArchivedStudents(@RequestParam String keyword) {
         List<StudentEntity> archivedStudents = studrepo.findByArchivedAndFirstnameContainingIgnoreCaseOrLastnameContainingIgnoreCaseOrIdNumberContaining(
-        		true, keyword, keyword, keyword);
+                true, keyword, keyword, keyword);
         return ResponseEntity.ok(archivedStudents);
     }
 

@@ -78,6 +78,11 @@ public class StudentService{
         return studentRepository.findByArchived(true);
     }
 
+    //get all non-archived accounts
+    public List<StudentEntity> getNonArchivedStudents() {
+        return studentRepository.findByArchived(false);
+    }
+
     // Search students by first name, last name, or ID number
     public List<StudentEntity> searchStudents(String keyword) {
         // Call the repository method to perform the search
