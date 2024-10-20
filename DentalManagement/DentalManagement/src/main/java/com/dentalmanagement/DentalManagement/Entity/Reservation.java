@@ -1,35 +1,47 @@
 package com.dentalmanagement.DentalManagement.Entity;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "reservations")
 public class Reservation {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate date;
-    private LocalTime startTime;
-    private LocalTime endTime;
-    private String patientName;
-    private String patientEmail;
+    private String studentIdNumber;
+    private String fullName;
+    private String program;
+    private String yearLevel;
+    private String date;
+    private String time;
+    private String status; 
+    
 
-    @ManyToOne
-    @JoinColumn(name = "slot_id", nullable = false)
-    private Slot slot;
+    @ManyToOne(cascade = CascadeType.PERSIST) // Or CascadeType.ALL based on your requirement
+    private Event event;
 
     // Getters and Setters
+    public String getProgram() {
+        return program;
+    }
+
+    public void setProgram(String program) {
+        this.program = program;
+    }
+    
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
     public Long getId() {
         return id;
     }
@@ -38,53 +50,51 @@ public class Reservation {
         this.id = id;
     }
 
-    public LocalDate getDate() {
+    public String getStudentIdNumber() {
+        return studentIdNumber;
+    }
+
+    public void setStudentIdNumber(String studentIdNumber) {
+        this.studentIdNumber = studentIdNumber;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getYearLevel() {
+        return yearLevel;
+    }
+
+    public void setYearLevel(String yearLevel) {
+        this.yearLevel = yearLevel;
+    }
+
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public LocalTime getStartTime() {
-        return startTime;
+    public String getTime() {
+        return time;
     }
 
-    public void setStartTime(LocalTime startTime) {
-        this.startTime = startTime;
+    public void setTime(String time) {
+        this.time = time;
     }
 
-    public LocalTime getEndTime() {
-        return endTime;
+    public Event getEvent() {
+        return event;
     }
 
-    public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
-    }
-
-    public String getPatientName() {
-        return patientName;
-    }
-
-    public void setPatientName(String patientName) {
-        this.patientName = patientName;
-    }
-
-    public String getPatientEmail() {
-        return patientEmail;
-    }
-
-    public void setPatientEmail(String patientEmail) {
-        this.patientEmail = patientEmail;
-    }
-
-    public Slot getSlot() {
-        return slot;
-    }
-
-    public void setSlot(Slot slot) {
-        this.slot = slot;
+    public void setEvent(Event event) {
+        this.event = event;
     }
 }
-
-

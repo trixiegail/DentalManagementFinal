@@ -2,7 +2,9 @@ package com.dentalmanagement.DentalManagement.Controller;
 
 import com.dentalmanagement.DentalManagement.DTO.ReservationRequest;
 import com.dentalmanagement.DentalManagement.Entity.Event;
+import com.dentalmanagement.DentalManagement.Entity.Reservation;
 import com.dentalmanagement.DentalManagement.Service.EventService;
+import com.dentalmanagement.DentalManagement.Service.ReservationService;
 import com.dentalmanagement.DentalManagement.Repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,9 @@ public class EventController {
 
     @Autowired
     private EventRepository eventRepository;
+
+    @Autowired
+    private ReservationService reservationService;
 
 
 
@@ -67,13 +72,20 @@ public class EventController {
 
     @PostMapping("/reserve")
     public ResponseEntity<String> reserveSlot(@RequestBody ReservationRequest request) {
-        boolean success = eventService.reserveSlot(request);
+        boolean success = reservationService.reserveSlot(request);
         if (success) {
             return ResponseEntity.ok("Slot reserved successfully");
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to reserve slot");
         }
     }
+
+    @GetMapping("/reservations")
+    public List<Reservation> getAllReservations() {
+        return reservationService.getAllReservations();
+    }
+	    
+
 
 
     @PutMapping("/{id}")
@@ -93,8 +105,22 @@ public class EventController {
         }
     }
 
+    @PutMapping("/reserve/{id}")
+    public ResponseEntity<Event> reserveEvent(@PathVariable Long id, @RequestBody ReservationRequest request) {
+        Event event = eventService.getEventById(id);
+        
+        if (event != null && !event.getIsBooked()) {
+            event.setIsBooked(true); // Mark as reserved
+            event.setTitle("Reserved Slot");
+            event.setType("Unavailable");
+            eventService.saveEvent(event);
+            return ResponseEntity.ok(event);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
 
 
 
 }
-

@@ -1,5 +1,7 @@
 package com.dentalmanagement.DentalManagement.Entity;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 
 
@@ -83,6 +85,9 @@ public class StudentEntity{
 		this.password = password;
 		this.archived = archived;
 	}
+	
+	 @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+	    private List<StudentCheckup> studentCheckups;
 
 	public String getIdNumber() {
 		return idNumber;
@@ -174,5 +179,13 @@ public class StudentEntity{
 	public long getId() {
         return id;
     }
+	
+	public List<StudentCheckup> getStudentCheckups() {
+	    return studentCheckups;
+	}
+
+	public void setStudentCheckups(List<StudentCheckup> studentCheckups) {
+	    this.studentCheckups = studentCheckups;
+	}
 	
 }

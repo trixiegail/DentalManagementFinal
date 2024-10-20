@@ -136,6 +136,16 @@ public class StudentController {
     public ResponseEntity<?> uploadProfilePicture(@PathVariable int studentId,@RequestParam("image") MultipartFile file){
         return new ResponseEntity<>(studservice.uploadImage(studentId, file), HttpStatus.OK);
     }
+    
+    @GetMapping("/students/{idNumber}")
+    public ResponseEntity<StudentEntity> getIdNumber(@PathVariable("idNumber") String idNumber) {
+        try {
+            StudentEntity student = studservice.getIdNumber(idNumber);
+            return ResponseEntity.ok(student);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 
     @GetMapping("/getProfilePicture/{userId}")
     public ResponseEntity<?> getProfilePicture(@PathVariable int userId) throws IOException {

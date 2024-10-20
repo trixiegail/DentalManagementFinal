@@ -1,6 +1,8 @@
 package com.dentalmanagement.DentalManagement.Repository;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
@@ -29,5 +31,5 @@ public interface StudentRepository extends JpaRepository<StudentEntity, Integer>
     //Find archive students accounts
     List<StudentEntity> findByArchivedAndFirstnameContainingIgnoreCaseOrLastnameContainingIgnoreCaseOrIdNumberContaining(
     boolean archived, String firstName, String lastName, String idNumber);
-
+    Optional<StudentEntity> findByIdNumber(String idNumber);
 }
