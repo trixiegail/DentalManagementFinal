@@ -33,6 +33,8 @@ public class StudentController {
     @Autowired
     StudentRepository studrepo;
     
+    //:)
+    
     // Endpoint for student authentication
     @PostMapping("/login")
     public ResponseEntity<StudentEntity> authenticate(@RequestBody StudentEntity loginRequest) {
@@ -143,6 +145,16 @@ public class StudentController {
     @PostMapping("/uploadProfilePicture/{studentId}")
     public ResponseEntity<?> uploadProfilePicture(@PathVariable int studentId,@RequestParam("image") MultipartFile file){
         return new ResponseEntity<>(studservice.uploadImage(studentId, file), HttpStatus.OK);
+    }
+    
+    @GetMapping("/students/{idNumber}")
+    public ResponseEntity<StudentEntity> getIdNumber(@PathVariable("idNumber") String idNumber) {
+        try {
+            StudentEntity student = studservice.getIdNumber(idNumber);
+            return ResponseEntity.ok(student);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @GetMapping("/getProfilePicture/{userId}")

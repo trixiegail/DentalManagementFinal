@@ -12,4 +12,5 @@ import org.springframework.stereotype.Repository;
 public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findSlotsByDate(String date);
     Optional<Event> findByDateAndTime(String date, String time);
+    Optional<Event> findById(Long id);
 }

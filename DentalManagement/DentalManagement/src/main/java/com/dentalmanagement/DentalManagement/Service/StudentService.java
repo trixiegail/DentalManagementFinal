@@ -123,6 +123,11 @@ public class StudentService{
             throw new RuntimeException("Failed to read the image data", e);
         }
     }
+    
+    public StudentEntity getIdNumber(String idNumber) {
+        return studentRepository.findByIdNumber(idNumber)
+            .orElseThrow(() -> new NoSuchElementException("Student not found with ID: " + idNumber));
+    }
 
 
 

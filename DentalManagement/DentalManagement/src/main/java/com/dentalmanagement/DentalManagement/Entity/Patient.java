@@ -1,23 +1,33 @@
-package com.dentalmanagement.DentalManagement.DTO;
+package com.dentalmanagement.DentalManagement.Entity;
 
-public class ReservationRequest {
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class Patient {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String studentIdNumber;
     private String fullName;
     private String program;
     private String yearLevel;
     private String date;
     private String time;
-    
 
     // Getters and Setters
-    public String getProgram() {
-        return program;
+    public Long getId() {
+        return id;
     }
 
-    public void setProgram(String program) {
-        this.program = program;
+    public void setId(Long id) {
+        this.id = id;
     }
-    
+
     public String getStudentIdNumber() {
         return studentIdNumber;
     }
@@ -34,6 +44,13 @@ public class ReservationRequest {
         this.fullName = fullName;
     }
 
+    public String getProgram() {
+        return program;
+    }
+
+    public void setProgram(String program) {
+        this.program = program;
+    }
 
     public String getYearLevel() {
         return yearLevel;

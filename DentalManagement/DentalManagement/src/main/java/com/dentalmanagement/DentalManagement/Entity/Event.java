@@ -14,7 +14,7 @@ public class Event {
     private String title;
     private Date start;
     private Date end;
-    private boolean isBooked;
+    private boolean isBooked = false;
 
     private String date;
     private String time;
@@ -95,4 +95,16 @@ public class Event {
     public void setType(String type) {
         this.type = type;
     }
+    
+    private int availableSlots;
+
+    public int getAvailableSlots() {
+        return availableSlots;
+    }
+
+    public void setAvailableSlots(int availableSlots) {
+        this.availableSlots = availableSlots;
+    }
+    
+
 }
