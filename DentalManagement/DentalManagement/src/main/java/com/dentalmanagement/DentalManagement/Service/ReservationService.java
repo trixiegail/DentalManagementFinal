@@ -136,9 +136,9 @@ return false;
     /**
      * Cancel a reservation and update the event (if needed)
      */
-    public boolean cancelReservation(Long reservationId) {
+    public boolean cancelReservation(Long id) {
         try {
-            Optional<Reservation> reservationOpt = reservationRepository.findById(reservationId);
+            Optional<Reservation> reservationOpt = reservationRepository.findById(id);
             if (reservationOpt.isPresent()) {
                 Reservation reservation = reservationOpt.get();
                 
@@ -147,12 +147,13 @@ return false;
                 if (eventOpt.isPresent()) {
                     Event event = eventOpt.get();
                     
-                    // Increment the available slots
+                    // Increment the available slots (if applicable)
                     event.setCount(event.getCount() + 1);
-                    
-                    // Update event status if needed
-                    if (event.getCount() > 0 && event.getType().equals("Unavailable")) {
-                        event.setType("Available");
+
+                    // Update the event's status and mark it as available again
+                    if (event.getCount() > 0) {
+                        event.setIsBooked(false);  // Mark the event as not booked
+                        event.setType("Available"); // Set type to Available
                     }
                     
                     // Save the updated event
@@ -162,10 +163,10 @@ return false;
                 }
                 
                 // Now delete the reservation
-                reservationRepository.deleteById(reservationId);
+                reservationRepository.deleteById(id);
                 return true;
             } else {
-                System.out.println("No reservation found with ID: " + reservationId);
+                System.out.println("No reservation found with ID: " + id);
                 return false;
             }
         } catch (Exception e) {
@@ -175,6 +176,7 @@ return false;
             return false;
         }
     }
+
     
     
     public boolean acceptReservation(Long id) {
@@ -203,11 +205,11 @@ return false;
         }
     }
 
+    public List<Reservation> getReservationsByStudentId(String studentIdNumber) {
+        return reservationRepository.findByStudentIdNumber(studentIdNumber);
+    }
+   
 
-    
-    
 
-
-    
     
 }

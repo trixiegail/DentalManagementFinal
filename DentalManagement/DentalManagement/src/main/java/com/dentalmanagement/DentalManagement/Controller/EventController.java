@@ -39,14 +39,18 @@ public class EventController {
 
 
     @PutMapping("/book/{id}")
-    public Event bookEvent(@PathVariable Long id) {
+    public ResponseEntity<Event> bookEvent(@PathVariable Long id) {
         Event event = eventService.getEventById(id);
         if (event != null && !event.getIsBooked()) {
             event.setIsBooked(true);
-            return eventService.saveEvent(event);
+            event.setType("Unavailable"); // Set event type to 'Unavailable'
+            eventService.saveEvent(event);
+            return ResponseEntity.ok(event);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        return null; // Handle error cases appropriately
     }
+
 
 
     @DeleteMapping("/{id}")
@@ -119,8 +123,21 @@ public class EventController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
-
-
+    
+    @PutMapping("/available/{id}")
+    public ResponseEntity<?> makeEventAvailable(@PathVariable Long id) {
+        Event event = eventService.getEventById(id);
+        if (event != null && event.getIsBooked()) {
+            event.setIsBooked(false); // Mark the event as available
+            event.setType("Available"); // Update the event type to "Available"
+            eventService.saveEvent(event);
+            return ResponseEntity.ok("Event is now available");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Event not found or already available");
+        }
+    }
+    
+    
 
 
 }

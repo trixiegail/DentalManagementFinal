@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 	List<Reservation> findByDate(String date);
 	boolean existsByStudentIdNumber(String studentIdNumber);
-	
+	List<Reservation> findByStudentIdNumber(String studentIdNumber);
 }
 
 

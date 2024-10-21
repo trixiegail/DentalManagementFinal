@@ -93,19 +93,6 @@ public class ReservationController {
         }
     }
     
-//    @PutMapping("/accept/{id}")
-//    public ResponseEntity<?> acceptReservation(@PathVariable Long id) {
-//        try {
-//            boolean success = reservationService.acceptReservation(id);
-//            if (success) {
-//                return ResponseEntity.ok("Reservation accepted successfully");
-//            } else {
-//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Reservation not found");
-//            }
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error accepting reservation");
-//        }
-//    }
     
     @PostMapping("/accept/{id}")
     public ResponseEntity<?> acceptReservation(@PathVariable("id") Long id) {
@@ -121,8 +108,30 @@ public class ReservationController {
         }
     }
 
-    
-    
+    @GetMapping("/reservations/{studentIdNumber}")
+    public ResponseEntity<List<Reservation>> getReservationsByStudentId(@PathVariable String studentIdNumber) {
+        List<Reservation> reservations = reservationService.getReservationsByStudentId(studentIdNumber);
+        if (reservations != null && !reservations.isEmpty()) {
+            return ResponseEntity.ok(reservations);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteReservation(@PathVariable Long id) {
+        boolean success = reservationService.cancelReservation(id);
+        
+        if (success) {
+            return ResponseEntity.ok("Reservation cancelled successfully and event updated.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Reservation not found or could not be cancelled.");
+        }
+    }
+
+
+
+
 
 
 
