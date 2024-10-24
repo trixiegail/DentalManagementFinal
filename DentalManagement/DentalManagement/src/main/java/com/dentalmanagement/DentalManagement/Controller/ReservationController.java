@@ -2,6 +2,7 @@ package com.dentalmanagement.DentalManagement.Controller;
 
 import com.dentalmanagement.DentalManagement.DTO.ReservationRequest;
 import com.dentalmanagement.DentalManagement.Entity.Reservation;
+import com.dentalmanagement.DentalManagement.Service.DeclinedAppointmentService;
 import com.dentalmanagement.DentalManagement.Service.ReservationService;
 
 import java.util.HashMap;
@@ -21,6 +22,9 @@ public class ReservationController {
 
     @Autowired
     private ReservationService reservationService;
+    
+    @Autowired
+    private DeclinedAppointmentService declinedAppointmentService;
 
     /**
      * Create reservation with the given slot ID
@@ -79,6 +83,20 @@ public class ReservationController {
     }
     
     
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<?> cancelReservation(@PathVariable("id") Long id) { // Explicitly name the PathVariable as "id"
+//        try {
+//            boolean success = reservationService.cancelReservation(id);
+//            if (success) {
+//                return ResponseEntity.ok("Reservation cancelled successfully");
+//            } else {
+//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Reservation not found");
+//            }
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error cancelling reservation");
+//        }
+//    }
+    
     @DeleteMapping("/{id}")
     public ResponseEntity<?> cancelReservation(@PathVariable("id") Long id) { // Explicitly name the PathVariable as "id"
         try {
@@ -92,7 +110,6 @@ public class ReservationController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error cancelling reservation");
         }
     }
-    
     
     @PostMapping("/accept/{id}")
     public ResponseEntity<?> acceptReservation(@PathVariable("id") Long id) {
