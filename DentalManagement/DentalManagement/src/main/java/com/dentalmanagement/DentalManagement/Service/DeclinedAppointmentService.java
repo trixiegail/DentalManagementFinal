@@ -9,10 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dentalmanagement.DentalManagement.Entity.DeclinedAppointment;
-import com.dentalmanagement.DentalManagement.Entity.Patient;
 import com.dentalmanagement.DentalManagement.Entity.Reservation;
 import com.dentalmanagement.DentalManagement.Repository.DeclinedAppointmentRepository;
-import com.dentalmanagement.DentalManagement.Repository.PatientRepository;
 import com.dentalmanagement.DentalManagement.Repository.ReservationRepository;
 
 @Service
@@ -24,9 +22,6 @@ public class DeclinedAppointmentService {
     @Autowired  // Missing this annotation for ReservationRepository
     private ReservationRepository reservationRepository;
     
-    @Autowired
-    private PatientRepository patientRepository;
-
     // Fetch a reservation by ID
     public Reservation getReservation(Long id) {
         return reservationRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Reservation not found"));
@@ -50,9 +45,13 @@ public class DeclinedAppointmentService {
         declinedAppointment.setTime(reservation.getTime());
         declinedAppointment.setDeclinedDate(LocalDateTime.now()); 
 
+        // Add logging to check if duplicates are happening
+        System.out.println("Saving declined appointment for: " + reservation.getStudentIdNumber());
+
         // Save to the repository
         declinedAppointmentRepository.save(declinedAppointment);
     }
+
     
     // Fetch all declined appointments
     public List<DeclinedAppointment> getAllDeclinedAppointments() {
