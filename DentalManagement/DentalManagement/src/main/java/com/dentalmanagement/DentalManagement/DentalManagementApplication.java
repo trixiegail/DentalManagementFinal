@@ -20,7 +20,7 @@ public class DentalManagementApplication {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:5173") // Update with the port your Vite server is running on
+                        .allowedOrigins("https://projectyey.vercel.app/") // Update with the port your Vite server is running on
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);

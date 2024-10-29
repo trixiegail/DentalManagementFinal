@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/declined-appointments")
-@CrossOrigin(origins = "http://localhost:5173")  // Adjust CORS policy if needed
+@CrossOrigin(origins = "https://projectyey.vercel.app")  // Adjust CORS policy if needed
 public class DeclinedAppointmentController {
 
     @Autowired
