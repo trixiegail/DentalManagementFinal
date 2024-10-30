@@ -11,7 +11,7 @@ import com.dentalmanagement.DentalManagement.DTO.AdminDTO;
 import com.dentalmanagement.DentalManagement.Service.AdminService;
 
 @RestController
-@RequestMapping("/dentalmanagement")
+@RequestMapping("/admin")
 @CrossOrigin(origins = "https://projectyey.vercel.app/")
 public class AdminController {
 
@@ -22,7 +22,7 @@ public class AdminController {
         this.adminService = adminService;
     }
 
-    @PostMapping("/admin")
+    @PostMapping("/login-admin")
     public String adminLogin(@RequestBody AdminDTO loginRequest) {
         adminService.initializeAdmin();
 
