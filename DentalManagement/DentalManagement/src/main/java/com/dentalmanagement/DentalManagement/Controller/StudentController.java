@@ -25,7 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/student")
-@CrossOrigin(origins = "http://localhost:5173/")
+@CrossOrigin(origins = "https://projectyey.vercel.app")
 public class StudentController {
     @Autowired
     StudentService studservice;

@@ -32,5 +32,4 @@ public class AdminController {
             throw new RuntimeException("Admin login failed");
         }
     }
-
 }
