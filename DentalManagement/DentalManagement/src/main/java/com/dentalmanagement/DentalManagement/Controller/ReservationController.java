@@ -1,10 +1,5 @@
 package com.dentalmanagement.DentalManagement.Controller;
 
-import com.dentalmanagement.DentalManagement.DTO.ReservationRequest;
-import com.dentalmanagement.DentalManagement.Entity.Reservation;
-import com.dentalmanagement.DentalManagement.Service.DeclinedAppointmentService;
-import com.dentalmanagement.DentalManagement.Service.ReservationService;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,11 +8,23 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.dentalmanagement.DentalManagement.DTO.ReservationRequest;
+import com.dentalmanagement.DentalManagement.Entity.Reservation;
+import com.dentalmanagement.DentalManagement.Service.DeclinedAppointmentService;
+import com.dentalmanagement.DentalManagement.Service.ReservationService;
 
 @RestController
 @RequestMapping("/api/reservations")
-@CrossOrigin(origins = "http://localhost:5173/")  // Adjust CORS as necessary
+@CrossOrigin(origins = "https://projectyey.vercel.app/")  // Adjust CORS as necessary
 public class ReservationController {
 
     @Autowired

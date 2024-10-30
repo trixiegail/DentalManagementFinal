@@ -1,18 +1,24 @@
 package com.dentalmanagement.DentalManagement.Controller;
 
-import com.dentalmanagement.DentalManagement.Entity.Patient;
-import com.dentalmanagement.DentalManagement.Repository.PatientRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.dentalmanagement.DentalManagement.Entity.Patient;
+import com.dentalmanagement.DentalManagement.Repository.PatientRepository;
+
 @RestController
 @RequestMapping("/api/patients")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "https://projectyey.vercel.app/")
 public class PatientController {
 
     @Autowired

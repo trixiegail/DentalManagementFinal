@@ -12,7 +12,7 @@ import com.dentalmanagement.DentalManagement.Service.AdminService;
 
 @RestController
 @RequestMapping("/dentalmanagement")
-@CrossOrigin(origins = "https://projectyey.vercel.app")
+@CrossOrigin(origins = "https://projectyey.vercel.app/")
 public class AdminController {
 
     private final AdminService adminService;

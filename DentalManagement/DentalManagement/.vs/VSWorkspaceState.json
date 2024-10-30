@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\main",
+    "\\src\\main\\java",
+    "\\src\\main\\java\\com",
+    "\\src\\main\\java\\com\\dentalmanagement",
+    "\\src\\main\\java\\com\\dentalmanagement\\DentalManagement",
+    "\\src\\main\\java\\com\\dentalmanagement\\DentalManagement\\Entity"
+  ],
+  "SelectedNode": "\\src\\main\\java\\com\\dentalmanagement\\DentalManagement\\Entity\\AdminEntity.java",
+  "PreviewInSolutionExplorer": false
+}
