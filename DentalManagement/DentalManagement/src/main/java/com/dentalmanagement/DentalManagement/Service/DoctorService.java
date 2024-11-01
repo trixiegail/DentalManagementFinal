@@ -4,15 +4,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import com.dentalmanagement.DentalManagement.Entity.StudentEntity;
-import com.dentalmanagement.DentalManagement.Util.ImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dentalmanagement.DentalManagement.Entity.DoctorEntity;
 import com.dentalmanagement.DentalManagement.Repository.DoctorRepository;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
+import com.dentalmanagement.DentalManagement.Util.ImageUtils;
 
 @Service
 public class DoctorService {
