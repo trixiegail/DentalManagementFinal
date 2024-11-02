@@ -42,6 +42,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.azure.resourcemanager</groupId>
+			<artifactId>azure-resourcemanager-appservice</artifactId>
+			<version>2.44.0</version>
+		</dependency>
 
 	</dependencies>
 
@@ -57,6 +62,7 @@
 
 	<build>
 		<plugins>
+			<!-- Surefire Plugin for running tests -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
@@ -69,10 +75,25 @@
 					</systemPropertyVariables>
 				</configuration>
 			</plugin>
+
+			<!-- Jar Plugin for packaging with Main-Class attribute -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.1.0</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>com.dentalmanagement.DentalManagement.DentalManagementApplication.</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
-<!--	<build>-->
+
+	<!--	<build>-->
 <!--		<plugins>-->
 <!--			<plugin>-->
 <!--				<groupId>org.springframework.boot</groupId>-->
