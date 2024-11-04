@@ -84,14 +84,13 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>com.dentalmanagement.DentalManagement.DentalManagementApplication.</mainClass>
+							<mainClass>com.dentalmanagement.DentalManagement.DentalManagementApplication</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
 
 	<!--	<build>-->
 <!--		<plugins>-->
