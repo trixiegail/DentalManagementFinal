@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 
 import com.dentalmanagement.DentalManagement.Util.ImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dentalmanagement.DentalManagement.Entity.StudentEntity;
@@ -19,6 +20,8 @@ public class StudentService{
     @Autowired
     private StudentRepository studentRepository;
 
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
 
     // Authenticate a student by idNumber and studentPassword
     public StudentEntity authenticate(String idNumber, String password) {
@@ -27,6 +30,7 @@ public class StudentService{
 
     // Create or insert student record in tblstudent
     public StudentEntity insertStudent(StudentEntity student) {
+        student.setPassword(encoder.encode(student.getPassword()));
         return studentRepository.save(student);
     }
 
@@ -58,21 +62,21 @@ public class StudentService{
     //archive a student
     public StudentEntity archiveUser(int id) {
         StudentEntity studentToArchive = studentRepository.findById(id)
-            .orElseThrow(() -> new NoSuchElementException("Student " + id + " does not exist"));
-        
+                .orElseThrow(() -> new NoSuchElementException("Student " + id + " does not exist"));
+
         studentToArchive.setArchived(true); // Assuming you have an 'archived' field
         return studentRepository.save(studentToArchive);
     }
-    
+
     //unarchive a student
     public StudentEntity unarchiveUser(int id) {
         StudentEntity studentToUnarchive = studentRepository.findById(id)
-            .orElseThrow(() -> new NoSuchElementException("Student " + id + " does not exist"));
-        
+                .orElseThrow(() -> new NoSuchElementException("Student " + id + " does not exist"));
+
         studentToUnarchive.setArchived(false);
         return studentRepository.save(studentToUnarchive);
     }
-    
+
     // get all archived accounts
     public List<StudentEntity> getAllArchiveStudents() {
         return studentRepository.findByArchived(true);
@@ -100,7 +104,7 @@ public class StudentService{
         // Call the repository method to perform the search by year level
         return studentRepository.findByYearLevel(yearLevel);
     }
-	public List<StudentEntity> searchStudentsByDepartmentAndYear(String department, String yearLevel) {
+    public List<StudentEntity> searchStudentsByDepartmentAndYear(String department, String yearLevel) {
         return studentRepository.findByDepartmentAndYearLevel(department, yearLevel);
     }
 
@@ -123,10 +127,10 @@ public class StudentService{
             throw new RuntimeException("Failed to read the image data", e);
         }
     }
-    
+
     public StudentEntity getIdNumber(String idNumber) {
         return studentRepository.findByIdNumber(idNumber)
-            .orElseThrow(() -> new NoSuchElementException("Student not found with ID: " + idNumber));
+                .orElseThrow(() -> new NoSuchElementException("Student not found with ID: " + idNumber));
     }
 
 
