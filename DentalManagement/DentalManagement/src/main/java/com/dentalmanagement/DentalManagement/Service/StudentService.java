@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import com.dentalmanagement.DentalManagement.Entity.StaffEntity;
 import com.dentalmanagement.DentalManagement.Util.ImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,25 +21,24 @@ public class StudentService{
     @Autowired
     private StudentRepository studentRepository;
 
-    @Autowired
-    private BCryptPasswordEncoder encoder;
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-
-    // Authenticate a student by idNumber and studentPassword
-    public StudentEntity authenticate(String idNumber, String plainPassword) {
+    //authentication for student
+    public StudentEntity authenticate(String idNumber, String password) {
         StudentEntity student = studentRepository.findByIdNumber(idNumber)
-                .orElseThrow(() -> new NoSuchElementException("Invalid credentials"));
+                .orElseThrow(() -> new NoSuchElementException("Student not found with ID: " + idNumber));
 
-        if (encoder.matches(plainPassword, student.getPassword())) {
+        if (passwordEncoder.matches(password, student.getPassword())) {
             return student;
         } else {
-            throw new NoSuchElementException("Invalid credentials");
+            throw new IllegalArgumentException("Invalid password");
         }
     }
 
-    // Create or insert student record in tblstudent
+    // Create or insert student record
     public StudentEntity insertStudent(StudentEntity student) {
-        student.setPassword(encoder.encode(student.getPassword())); // Hash password
+        String hashedPassword = passwordEncoder.encode(student.getPassword());
+        student.setPassword(hashedPassword);
         return studentRepository.save(student);
     }
 
@@ -52,6 +52,12 @@ public class StudentService{
         StudentEntity student = studentRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Student " + id + " does not exist"));
 
+        // Update password if provided
+        if (newStudentDetails.getPassword() != null) {
+            String hashedPassword = passwordEncoder.encode(newStudentDetails.getPassword());
+            student.setPassword(hashedPassword);
+        }
+
         // Update other fields
         student.setIdNumber(newStudentDetails.getIdNumber());
         student.setFirstname(newStudentDetails.getFirstname());
@@ -62,11 +68,6 @@ public class StudentService{
         student.setBirthdate(newStudentDetails.getBirthdate());
         student.setEmail(newStudentDetails.getEmail());
         student.setGender(newStudentDetails.getGender());
-
-        // Only re-hash and set the password if it's changed
-        if (!newStudentDetails.getPassword().equals(student.getPassword())) {
-            student.setPassword(encoder.encode(newStudentDetails.getPassword()));
-        }
 
         return studentRepository.save(student);
     }
