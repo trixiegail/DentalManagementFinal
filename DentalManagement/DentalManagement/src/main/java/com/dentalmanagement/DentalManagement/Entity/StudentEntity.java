@@ -1,9 +1,12 @@
 package com.dentalmanagement.DentalManagement.Entity;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.dentalmanagement.DentalManagement.Util.PasswordUtil;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 @Entity
@@ -166,30 +169,18 @@ public class StudentEntity{
 	}
 
 	public void setPassword(String password) {
-		this.password = PasswordUtil.hashPassword(password);
+		this.password = password;
 	}
 
 	public String getPassword() {
 		return password;
 	}
 
-	public boolean isArchived() {
-		return archived;
-	}
-
 	public void setArchived(boolean archived) {
 		this.archived = archived;
 	}
-	public long getId() {
-        return id;
-    }
-	
-	public List<StudentCheckup> getStudentCheckups() {
-	    return studentCheckups;
-	}
 
-	public void setStudentCheckups(List<StudentCheckup> studentCheckups) {
-	    this.studentCheckups = studentCheckups;
+	public boolean isArchived() {
+		return archived;
 	}
-	
 }
