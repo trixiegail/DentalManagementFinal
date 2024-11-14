@@ -7,6 +7,9 @@ import java.util.NoSuchElementException;
 import com.dentalmanagement.DentalManagement.Entity.StaffEntity;
 import com.dentalmanagement.DentalManagement.Util.ImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class StudentService{
+public class StudentService implements UserDetailsService {
 
     @Autowired
     private StudentRepository studentRepository;
@@ -165,4 +168,10 @@ public class StudentService{
         return ImageUtils.decompressImage(student.getStudentProfile());
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String idNumber) throws UsernameNotFoundException {
+        StudentEntity student = studentRepository.findByIdNumber(idNumber)
+                .orElseThrow(() -> new UsernameNotFoundException("Student not found with ID: " + idNumber));
+        return null;
+    }
 }
