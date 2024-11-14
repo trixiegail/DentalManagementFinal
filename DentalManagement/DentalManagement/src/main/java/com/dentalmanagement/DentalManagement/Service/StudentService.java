@@ -24,13 +24,20 @@ public class StudentService{
 
 
     // Authenticate a student by idNumber and studentPassword
-    public StudentEntity authenticate(String idNumber, String password) {
-        return studentRepository.findByIdNumberAndPassword(idNumber, password);
+    public StudentEntity authenticate(String idNumber, String plainPassword) {
+        StudentEntity student = studentRepository.findByIdNumber(idNumber)
+                .orElseThrow(() -> new NoSuchElementException("Invalid credentials"));
+
+        if (encoder.matches(plainPassword, student.getPassword())) {
+            return student;
+        } else {
+            throw new NoSuchElementException("Invalid credentials");
+        }
     }
 
     // Create or insert student record in tblstudent
     public StudentEntity insertStudent(StudentEntity student) {
-        student.setPassword(encoder.encode(student.getPassword()));
+        student.setPassword(encoder.encode(student.getPassword())); // Hash password
         return studentRepository.save(student);
     }
 
@@ -44,7 +51,7 @@ public class StudentService{
         StudentEntity student = studentRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Student " + id + " does not exist"));
 
-        // Update the record
+        // Update other fields
         student.setIdNumber(newStudentDetails.getIdNumber());
         student.setFirstname(newStudentDetails.getFirstname());
         student.setLastname(newStudentDetails.getLastname());
@@ -54,10 +61,15 @@ public class StudentService{
         student.setBirthdate(newStudentDetails.getBirthdate());
         student.setEmail(newStudentDetails.getEmail());
         student.setGender(newStudentDetails.getGender());
-        student.setPassword(newStudentDetails.getPassword());
+
+        // Only re-hash and set the password if it's changed
+        if (!newStudentDetails.getPassword().equals(student.getPassword())) {
+            student.setPassword(encoder.encode(newStudentDetails.getPassword()));
+        }
 
         return studentRepository.save(student);
     }
+
 
     //archive a student
     public StudentEntity archiveUser(int id) {
