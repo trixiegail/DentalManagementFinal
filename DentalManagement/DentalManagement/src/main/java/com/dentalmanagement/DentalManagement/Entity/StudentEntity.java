@@ -2,6 +2,7 @@ package com.dentalmanagement.DentalManagement.Entity;
 
 import java.util.List;
 
+import com.dentalmanagement.DentalManagement.Util.PasswordUtil;
 import jakarta.persistence.*;
 
 
@@ -44,6 +45,9 @@ public class StudentEntity{
 	
 	@Column(name = "archived_accounts")
 	private boolean archived;
+
+//	@OneToOne(mappedBy = "student", cascade = CascadeType.ALL)
+//	private ForgotPassword forgotPassword;
 
 	@Basic(fetch = FetchType.LAZY)
 	@Column(columnDefinition = "LONGBLOB")
@@ -162,7 +166,7 @@ public class StudentEntity{
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = PasswordUtil.hashPassword(password);
 	}
 
 	public String getPassword() {
