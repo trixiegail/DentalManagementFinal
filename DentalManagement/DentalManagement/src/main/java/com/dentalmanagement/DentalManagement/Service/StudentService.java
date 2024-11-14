@@ -24,7 +24,7 @@ public class StudentService implements UserDetailsService {
     @Autowired
     private StudentRepository studentRepository;
 
-    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
 
     //authentication for student
     public StudentEntity authenticate(String idNumber, String password) {
