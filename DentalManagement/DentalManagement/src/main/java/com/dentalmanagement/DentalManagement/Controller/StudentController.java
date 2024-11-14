@@ -32,9 +32,9 @@ public class StudentController {
 
     @Autowired
     StudentRepository studrepo;
-    
+
     //:)
-    
+
     // Endpoint for student authentication
     @PostMapping("/login")
     public ResponseEntity<StudentEntity> authenticate(@RequestBody StudentEntity loginRequest) {
@@ -45,19 +45,19 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
     }
-    
+
     // Create a student record
     @PostMapping("/insertStudent")
     public StudentEntity insertStudent(@RequestBody StudentEntity student) {
         return studservice.insertStudent(student);
     }
-    
+
     // Read all student records in tblstudent
     @GetMapping("/getAllStudents")
     public List<StudentEntity> getAllStudents(){
         return studservice.getAllStudents();
     }
-    
+
     // Update a student record
     @PutMapping("/updateStudent/{id}")
     public StudentEntity updateStudent(@PathVariable int id, @RequestBody StudentEntity newStudentDetails) {
@@ -76,7 +76,7 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while archiving the student");
         }
     }
-    
+
     //unarchive a student
     @PostMapping("/unarchiveStudent/{id}")
     public ResponseEntity<?> unarchiveUser(@PathVariable int id) {
@@ -89,7 +89,7 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while unarchiving the student");
         }
     }
-    
+
     //get all archived accounts
     @GetMapping("/archivedStudents")
     public ResponseEntity<List<StudentEntity>> getArchivedStudents() {
@@ -121,20 +121,20 @@ public class StudentController {
     }
 
     // Search for students by department
-	@GetMapping("/searchByDepartmentAndYear")
-	public ResponseEntity<List<StudentEntity>> searchStudentsByDepartmentAndYear(
-		@RequestParam String department,
-		@RequestParam String yearLevel
-	) {
-		List<StudentEntity> students = studservice.searchStudentsByDepartmentAndYear(department, yearLevel);
-		return ResponseEntity.ok(students);
-	}
-	@GetMapping("/searchByDepartment")
-	public ResponseEntity<List<StudentEntity>> searchStudentsByDepartment(@RequestParam String department) {
-    	List<StudentEntity> students = studservice.searchStudentsByDepartment(department);
-    	return ResponseEntity.ok(students);
-	}	
-	
+    @GetMapping("/searchByDepartmentAndYear")
+    public ResponseEntity<List<StudentEntity>> searchStudentsByDepartmentAndYear(
+            @RequestParam String department,
+            @RequestParam String yearLevel
+    ) {
+        List<StudentEntity> students = studservice.searchStudentsByDepartmentAndYear(department, yearLevel);
+        return ResponseEntity.ok(students);
+    }
+    @GetMapping("/searchByDepartment")
+    public ResponseEntity<List<StudentEntity>> searchStudentsByDepartment(@RequestParam String department) {
+        List<StudentEntity> students = studservice.searchStudentsByDepartment(department);
+        return ResponseEntity.ok(students);
+    }
+
     // Search for students by year level
     @GetMapping("/searchByYearLevel")
     public ResponseEntity<List<StudentEntity>> searchStudentsByYearLevel(@RequestParam String yearLevel) {
@@ -146,7 +146,7 @@ public class StudentController {
     public ResponseEntity<?> uploadProfilePicture(@PathVariable int studentId,@RequestParam("image") MultipartFile file){
         return new ResponseEntity<>(studservice.uploadImage(studentId, file), HttpStatus.OK);
     }
-    
+
     @GetMapping("/students/{idNumber}")
     public ResponseEntity<StudentEntity> getIdNumber(@PathVariable("idNumber") String idNumber) {
         try {

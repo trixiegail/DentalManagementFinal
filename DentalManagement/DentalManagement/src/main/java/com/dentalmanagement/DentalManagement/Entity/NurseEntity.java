@@ -33,6 +33,9 @@ public class NurseEntity {
     @Column(name = "archived_accounts")
     private boolean archived;
 
+//	@OneToOne(mappedBy = "nurse", cascade = CascadeType.ALL)
+//	private ForgotPassword forgotPassword;
+
 	@Basic(fetch = FetchType.LAZY)
 	@Column(columnDefinition = "LONGBLOB")
 	private byte[]nurseProfile;

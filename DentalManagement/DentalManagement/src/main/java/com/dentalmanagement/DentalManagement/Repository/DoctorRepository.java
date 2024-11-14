@@ -19,5 +19,6 @@ public interface DoctorRepository extends JpaRepository<DoctorEntity, Integer>{
 	List<DoctorEntity> findByArchivedAndFirstnameContainingIgnoreCaseOrLastnameContainingIgnoreCaseOrIdNumberContaining(
 			boolean archived, String firstName, String lastName, String idNumber);
 
+	List<DoctorEntity> findByEmail(String email);
 	List<DoctorEntity> findByFirstnameContainingOrLastnameContaining(String firstname, String lastname);
 }

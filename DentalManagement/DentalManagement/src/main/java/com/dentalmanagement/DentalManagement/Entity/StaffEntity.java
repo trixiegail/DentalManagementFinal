@@ -33,6 +33,9 @@ public class StaffEntity {
 
 	@Column(name = "archived_accounts")
 	private boolean archived;
+
+//	@OneToOne(mappedBy = "staff", cascade = CascadeType.ALL)
+//	private ForgotPassword forgotPassword
 	
 //    @Enumerated(EnumType.STRING)
 //    @Column(name = "role")

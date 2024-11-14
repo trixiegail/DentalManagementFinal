@@ -20,7 +20,8 @@ public class StudentService{
     @Autowired
     private StudentRepository studentRepository;
 
-    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
 
     // Authenticate a student by idNumber and studentPassword
@@ -162,4 +163,5 @@ public class StudentService{
                 .orElseThrow(() -> new NoSuchElementException("Student " + id + " does not exist"));
         return ImageUtils.decompressImage(student.getStudentProfile());
     }
+
 }

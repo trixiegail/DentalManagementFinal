@@ -21,4 +21,5 @@ public interface StaffRepository extends JpaRepository<StaffEntity, Integer>{
 			boolean archived, String firstName, String lastName, String idNumber);
 
 	List<StaffEntity> findByFirstnameContainingOrLastnameContaining(String firstname, String lastname);
+	List<StaffEntity> findByEmail(String email);
 }

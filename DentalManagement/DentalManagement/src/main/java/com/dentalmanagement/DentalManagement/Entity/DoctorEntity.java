@@ -33,6 +33,9 @@ public class DoctorEntity {
     @Column(name = "archived_accounts")
     private boolean archived;
 
+//	@OneToOne(mappedBy = "doctor", cascade = CascadeType.ALL)
+//	private ForgotPassword forgotPassword;
+
 //    @Enumerated(EnumType.STRING)
 //    @Column(name = "role")
 //    private OtherUserRole role;

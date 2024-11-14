@@ -32,4 +32,7 @@ public interface StudentRepository extends JpaRepository<StudentEntity, Integer>
     List<StudentEntity> findByArchivedAndFirstnameContainingIgnoreCaseOrLastnameContainingIgnoreCaseOrIdNumberContaining(
     boolean archived, String firstName, String lastName, String idNumber);
     Optional<StudentEntity> findByIdNumber(String idNumber);
+    List<StudentEntity> findByEmail(String email);
+    List<StudentEntity> findByIdNumberOrEmail(String idNumber, String email);
+
 }

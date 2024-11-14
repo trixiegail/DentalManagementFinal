@@ -22,4 +22,5 @@ public interface NurseRepository extends JpaRepository<NurseEntity, Integer>{
 			boolean archived, String firstName, String lastName, String idNumber);
 
 	List<NurseEntity> findByFirstnameContainingOrLastnameContaining(String firstname, String lastname);
+	List<NurseEntity> findByEmail(String email);
 }
