@@ -1,12 +1,7 @@
 package com.dentalmanagement.DentalManagement.Entity;
-
-import java.util.Collection;
 import java.util.List;
 
 import jakarta.persistence.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 
 @Entity
 @Table (name = "tablestudent")
