@@ -6,7 +6,6 @@ import java.util.NoSuchElementException;
 
 import com.dentalmanagement.DentalManagement.Util.ImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dentalmanagement.DentalManagement.Entity.StudentEntity;
@@ -20,28 +19,13 @@ public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
-    private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public StudentService(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
     // Authenticate a student by idNumber and studentPassword
     public StudentEntity authenticate(String idNumber, String password) {
-        StudentEntity student = studentRepository.findByIdNumberAndPassword(idNumber, password);
-
-        // If student is found and passwords match, return the student entity
-        if (student != null && passwordEncoder.matches(password, student.getPassword())) {
-            return student;
-        } else {
-            throw new NoSuchElementException("Invalid credentials");
-        }
+        return studentRepository.findByIdNumberAndPassword(idNumber, password);
     }
-
 
     // Create or insert student record in tblstudent
     public StudentEntity insertStudent(StudentEntity student) {
-        student.setPassword(passwordEncoder.encode(student.getPassword()));
         return studentRepository.save(student);
     }
 
@@ -55,7 +39,7 @@ public class StudentService {
         StudentEntity student = studentRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Student " + id + " does not exist"));
 
-        // Update the record fields
+        // Update the record
         student.setIdNumber(newStudentDetails.getIdNumber());
         student.setFirstname(newStudentDetails.getFirstname());
         student.setLastname(newStudentDetails.getLastname());
@@ -65,15 +49,10 @@ public class StudentService {
         student.setBirthdate(newStudentDetails.getBirthdate());
         student.setEmail(newStudentDetails.getEmail());
         student.setGender(newStudentDetails.getGender());
-
-        // Only hash and set the password if it has changed
-        if (!newStudentDetails.getPassword().equals(student.getPassword())) {
-            student.setPassword(passwordEncoder.encode(newStudentDetails.getPassword()));
-        }
+        student.setPassword(newStudentDetails.getPassword());
 
         return studentRepository.save(student);
     }
-
 
     //archive a student
     public StudentEntity archiveUser(int id) {
@@ -118,7 +97,6 @@ public class StudentService {
     public List<StudentEntity> searchStudentsByDepartmentAndYear(String department, String yearLevel) {
         return studentRepository.findByDepartmentAndYearLevel(department, yearLevel);
     }
-
     public StudentEntity getIdNumber(String idNumber) {
         return studentRepository.findByIdNumber(idNumber)
                 .orElseThrow(() -> new NoSuchElementException("Student not found with ID: " + idNumber));
@@ -149,6 +127,9 @@ public class StudentService {
             throw new RuntimeException("Failed to read the image data", e);
         }
     }
+
+
+
 
     public String getPictureFormat(int id){
         StudentEntity student = studentRepository.findById(id)
