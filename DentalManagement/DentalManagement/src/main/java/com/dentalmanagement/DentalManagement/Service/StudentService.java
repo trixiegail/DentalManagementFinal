@@ -14,10 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class StudentService {
+public class StudentService{
 
     @Autowired
     private StudentRepository studentRepository;
+
 
     // Authenticate a student by idNumber and studentPassword
     public StudentEntity authenticate(String idNumber, String password) {
@@ -58,23 +59,24 @@ public class StudentService {
     public StudentEntity archiveUser(int id) {
         StudentEntity studentToArchive = studentRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Student " + id + " does not exist"));
-
         studentToArchive.setArchived(true); // Assuming you have an 'archived' field
         return studentRepository.save(studentToArchive);
     }
-
     //unarchive a student
     public StudentEntity unarchiveUser(int id) {
         StudentEntity studentToUnarchive = studentRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Student " + id + " does not exist"));
-
         studentToUnarchive.setArchived(false);
         return studentRepository.save(studentToUnarchive);
     }
-
     // get all archived accounts
     public List<StudentEntity> getAllArchiveStudents() {
         return studentRepository.findByArchived(true);
+    }
+
+    //get all non-archived accounts
+    public List<StudentEntity> getNonArchivedStudents() {
+        return studentRepository.findByArchived(false);
     }
 
     // Search students by first name, last name, or ID number
@@ -97,16 +99,6 @@ public class StudentService {
     public List<StudentEntity> searchStudentsByDepartmentAndYear(String department, String yearLevel) {
         return studentRepository.findByDepartmentAndYearLevel(department, yearLevel);
     }
-    public StudentEntity getIdNumber(String idNumber) {
-        return studentRepository.findByIdNumber(idNumber)
-                .orElseThrow(() -> new NoSuchElementException("Student not found with ID: " + idNumber));
-    }
-
-    //get all non-archived accounts
-    public List<StudentEntity> getNonArchivedStudents() {
-        return studentRepository.findByArchived(false);
-    }
-
 
     @Transactional
     public String uploadImage(int id, MultipartFile file) {
@@ -127,7 +119,10 @@ public class StudentService {
             throw new RuntimeException("Failed to read the image data", e);
         }
     }
-
+    public StudentEntity getIdNumber(String idNumber) {
+        return studentRepository.findByIdNumber(idNumber)
+                .orElseThrow(() -> new NoSuchElementException("Student not found with ID: " + idNumber));
+    }
 
 
 
@@ -145,5 +140,4 @@ public class StudentService {
                 .orElseThrow(() -> new NoSuchElementException("Student " + id + " does not exist"));
         return ImageUtils.decompressImage(student.getStudentProfile());
     }
-
 }
