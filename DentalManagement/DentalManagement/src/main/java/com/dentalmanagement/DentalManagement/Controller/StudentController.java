@@ -1,12 +1,14 @@
 package com.dentalmanagement.DentalManagement.Controller;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,21 +19,38 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.MediaType;
 
+import com.dentalmanagement.DentalManagement.DTO.ToothStatusDTO;
+import com.dentalmanagement.DentalManagement.Entity.StudentCheckup;
 import com.dentalmanagement.DentalManagement.Entity.StudentEntity;
+import com.dentalmanagement.DentalManagement.Entity.ToothStatus;
+//import com.dentalmanagement.DentalManagement.Entity.ToothStatus;
 import com.dentalmanagement.DentalManagement.Repository.StudentRepository;
+import com.dentalmanagement.DentalManagement.Repository.ToothStatusRepository;
+//import com.dentalmanagement.DentalManagement.Repository.ToothStatusRepository;
 import com.dentalmanagement.DentalManagement.Service.StudentService;
+//import com.dentalmanagement.DentalManagement.Service.ToothStatusService;
+import com.dentalmanagement.DentalManagement.Service.ToothStatusService;
+
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/student")
-@CrossOrigin(origins = "https://projectyey.vercel.app")
+@CrossOrigin(origins = "https://projectyey.vercel.app/")
 public class StudentController {
     @Autowired
     StudentService studservice;
 
     @Autowired
     StudentRepository studrepo;
+
+    @Autowired
+    private ToothStatusService toothStatusService;
+
+    @Autowired
+    private ToothStatusRepository toothStatusRepository;
+
 
     // Endpoint for student authentication
     @PostMapping("/login")
@@ -192,5 +211,26 @@ public class StudentController {
         byte[] profilePicture = studservice.downloadStudentImage(userId);
         return ResponseEntity.status(HttpStatus.OK).contentType(mediaType).body(profilePicture);
 
+    }
+
+
+    @PostMapping("/saveToothStatuses")
+    public ResponseEntity<?> saveToothStatuses(@RequestParam String studentIdNumber, @RequestBody List<ToothStatus> toothStatuses) {
+        System.out.println("Received studentIdNumber: " + studentIdNumber);
+        System.out.println("Received toothStatuses: " + toothStatuses);
+
+        try {
+            toothStatusService.saveToothStatuses(studentIdNumber, toothStatuses);
+            return ResponseEntity.ok("Tooth statuses saved successfully.");
+        } catch (Exception e) {
+            e.printStackTrace();  // Log the exception for more details
+            return ResponseEntity.status(500).body("Error saving tooth statuses: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/{studentIdNumber}/tooth-statuses")
+    public List<ToothStatusDTO> getStudentToothStatuses(@PathVariable String studentIdNumber) {
+        // Call the service method to get the list of ToothStatusDTOs for the student
+        return toothStatusService.getStudentToothStatuses(studentIdNumber);
     }
 }
