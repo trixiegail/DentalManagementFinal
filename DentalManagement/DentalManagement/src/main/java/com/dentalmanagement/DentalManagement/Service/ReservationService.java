@@ -23,7 +23,7 @@ public class ReservationService {
 
     @Autowired
     private EventRepository eventRepository;
-    
+
     @Autowired
     private PatientRepository patientRepository;
 
@@ -40,12 +40,12 @@ public class ReservationService {
             if (foundEvent.getCount() > 0) {
                 // Reduce the available slots count for the event
                 foundEvent.setCount(foundEvent.getCount() - 1);
-                
+
                 // If no slots remain, mark the event as Unavailable
                 if (foundEvent.getCount() == 0) {
                     foundEvent.setType("Unavailable");
                 }
-                
+
                 eventRepository.save(foundEvent); // Save the updated event
 
                 // Set the event details for the reservation and save it
@@ -75,58 +75,58 @@ public class ReservationService {
             throw new NoSuchElementException("Reservation with ID " + id + " does not exist.");
         }
     }
-    
+
     public boolean reserveSlot(ReservationRequest request) {
-    	
-    	// Check if student has an existing reservation
+
+        // Check if student has an existing reservation
         boolean hasExistingReservation = reservationRepository.existsByStudentIdNumber(request.getStudentIdNumber());
 
         if (hasExistingReservation) {
             throw new IllegalStateException("You already have a reservation.");
         }
-        
-       
+
+
         Optional<Event> event = eventRepository.findByDateAndTime(request.getDate(), request.getTime());
         if (event.isPresent()) {
             Event foundEvent = event.get();
-            
-        if (event.isPresent() && event.get().getCount() > 0) {
-        	
-        	event.get().setCount(event.get().getCount() - 1);
-        	
-        	// If no slots remain, mark the event as Unavailable
-            if (foundEvent.getCount() == 0) {
-                foundEvent.setType("Unavailable");
+
+            if (event.isPresent() && event.get().getCount() > 0) {
+
+                event.get().setCount(event.get().getCount() - 1);
+
+                // If no slots remain, mark the event as Unavailable
+                if (foundEvent.getCount() == 0) {
+                    foundEvent.setType("Unavailable");
+                }
+
+                eventRepository.save(foundEvent);
+
+
+                // Create and save the reservation
+                Reservation reservation = new Reservation();
+                reservation.setDate(request.getDate());
+                reservation.setTime(request.getTime());
+                reservation.setStudentIdNumber(request.getStudentIdNumber());
+                reservation.setFullName(request.getFullName());
+                reservation.setProgram(request.getProgram());
+                reservation.setYearLevel(request.getYearLevel());
+                reservation.setEvent(foundEvent);
+
+                reservationRepository.save(reservation);
+                return true;
+            }      else {
+                throw new IllegalStateException("No available slots for this event.");
             }
-        	
-            eventRepository.save(foundEvent);
+        }
 
-            
-            // Create and save the reservation
-            Reservation reservation = new Reservation();
-            reservation.setDate(request.getDate());
-            reservation.setTime(request.getTime());
-            reservation.setStudentIdNumber(request.getStudentIdNumber());
-            reservation.setFullName(request.getFullName());
-            reservation.setProgram(request.getProgram());
-            reservation.setYearLevel(request.getYearLevel()); 
-            reservation.setEvent(foundEvent);
-
-            reservationRepository.save(reservation);
-            return true;
-        }      else {
-        throw new IllegalStateException("No available slots for this event.");
+        return false;
     }
-}
 
-return false;
-}
+    public List<Reservation> getAllReservations() {
+        return reservationRepository.findAll();
+    }
 
-	public List<Reservation> getAllReservations() {
-		return reservationRepository.findAll();
-	}
-	
-	 /**
+    /**
      * Get reservations by a specific date (Optional)
      */
     public List<Reservation> getReservationsByDate(String date) {
@@ -141,12 +141,12 @@ return false;
             Optional<Reservation> reservationOpt = reservationRepository.findById(id);
             if (reservationOpt.isPresent()) {
                 Reservation reservation = reservationOpt.get();
-                
+
                 // Find the event associated with this reservation
                 Optional<Event> eventOpt = eventRepository.findById(reservation.getEvent().getId());
                 if (eventOpt.isPresent()) {
                     Event event = eventOpt.get();
-                    
+
                     // Increment the available slots (if applicable)
                     event.setCount(event.getCount() + 1);
 
@@ -155,13 +155,13 @@ return false;
                         event.setIsBooked(false);  // Mark the event as not booked
                         event.setType("Available"); // Set type to Available
                     }
-                    
+
                     // Save the updated event
                     eventRepository.save(event);
                 } else {
                     System.out.println("No associated event found for the reservation.");
                 }
-                
+
                 // Now delete the reservation
                 reservationRepository.deleteById(id);
                 return true;
@@ -177,8 +177,8 @@ return false;
         }
     }
 
-    
-    
+
+
     public boolean acceptReservation(Long id) {
         Optional<Reservation> reservationOpt = reservationRepository.findById(id);
         if (reservationOpt.isPresent()) {
@@ -190,7 +190,7 @@ return false;
             patient.setStudentIdNumber(reservation.getStudentIdNumber());
             patient.setProgram(reservation.getProgram());
             patient.setYearLevel(reservation.getYearLevel());
-            patient.setDate(reservation.getDate()); 
+            patient.setDate(reservation.getDate());
             patient.setTime(reservation.getTime());
 
             // Save the patient to the patient repository
@@ -208,8 +208,4 @@ return false;
     public List<Reservation> getReservationsByStudentId(String studentIdNumber) {
         return reservationRepository.findByStudentIdNumber(studentIdNumber);
     }
-   
-
-
-    
 }
