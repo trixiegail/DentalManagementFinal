@@ -10,41 +10,41 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table (name = "tablestudent")
-public class StudentEntity implements UserDetails{
+public class StudentEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	@Column(name = "id_number")
 	private String idNumber;
-	
+
 	@Column(name = "first_name")
 	private String firstname;
-	
+
 	@Column(name = "last_name")
 	private String lastname;
-	
+
 	@Column(name = "department")
 	private String department;
-	
+
 	@Column(name = "program")
 	private String program;
-	
+
 	@Column(name = "year_level")
 	private String yearLevel;
-	
+
 	@Column(name = "student_birthdate")
 	private String birthdate;
-	
+
 	@Column(name = "student_email")
 	private String email;
-	
+
 	@Column(name = "gender")
 	private String gender;
-	
+
 	@Column(name = "student_password")
 	private String password;
-	
+
 	@Column(name = "archived_accounts")
 	private boolean archived;
 
@@ -91,7 +91,7 @@ public class StudentEntity implements UserDetails{
 		this.password = password;
 		this.archived = archived;
 	}
-	
+
 	 @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
 	    private List<StudentCheckup> studentCheckups;
 
@@ -158,7 +158,7 @@ public class StudentEntity implements UserDetails{
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	public String getGender() {
 		return gender;
 	}
@@ -171,39 +171,11 @@ public class StudentEntity implements UserDetails{
 		this.password = password;
 	}
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of();
-	}
-
 	public String getPassword() {
 		return password;
 	}
 
-	@Override
-	public String getUsername() {
-		return "";
-	}
 
-	@Override
-	public boolean isAccountNonExpired() {
-		return false;
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-		return false;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return false;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		return false;
-	}
 
 	public void setArchived(boolean archived) {
 		this.archived = archived;

@@ -4,13 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import com.dentalmanagement.DentalManagement.Entity.StaffEntity;
 import com.dentalmanagement.DentalManagement.Util.ImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dentalmanagement.DentalManagement.Entity.StudentEntity;
@@ -19,29 +14,18 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class StudentService implements UserDetailsService {
+public class StudentService {
 
     @Autowired
     private StudentRepository studentRepository;
 
-    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
-
-    //authentication for student
+    // Authenticate a student by idNumber and studentPassword
     public StudentEntity authenticate(String idNumber, String password) {
-        StudentEntity student = studentRepository.findByIdNumber(idNumber)
-                .orElseThrow(() -> new NoSuchElementException("Student not found with ID: " + idNumber));
-
-        if (passwordEncoder.matches(password, student.getPassword())) {
-            return student;
-        } else {
-            throw new IllegalArgumentException("Invalid password");
-        }
+        return studentRepository.findByIdNumberAndPassword(idNumber, password);
     }
 
-    // Create or insert student record
+    // Create or insert student record in tblstudent
     public StudentEntity insertStudent(StudentEntity student) {
-        String hashedPassword = passwordEncoder.encode(student.getPassword());
-        student.setPassword(hashedPassword);
         return studentRepository.save(student);
     }
 
@@ -55,13 +39,7 @@ public class StudentService implements UserDetailsService {
         StudentEntity student = studentRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Student " + id + " does not exist"));
 
-        // Update password if provided
-        if (newStudentDetails.getPassword() != null) {
-            String hashedPassword = passwordEncoder.encode(newStudentDetails.getPassword());
-            student.setPassword(hashedPassword);
-        }
-
-        // Update other fields
+        // Update the record
         student.setIdNumber(newStudentDetails.getIdNumber());
         student.setFirstname(newStudentDetails.getFirstname());
         student.setLastname(newStudentDetails.getLastname());
@@ -71,10 +49,10 @@ public class StudentService implements UserDetailsService {
         student.setBirthdate(newStudentDetails.getBirthdate());
         student.setEmail(newStudentDetails.getEmail());
         student.setGender(newStudentDetails.getGender());
+        student.setPassword(newStudentDetails.getPassword());
 
         return studentRepository.save(student);
     }
-
 
     //archive a student
     public StudentEntity archiveUser(int id) {
@@ -99,11 +77,6 @@ public class StudentService implements UserDetailsService {
         return studentRepository.findByArchived(true);
     }
 
-    //get all non-archived accounts
-    public List<StudentEntity> getNonArchivedStudents() {
-        return studentRepository.findByArchived(false);
-    }
-
     // Search students by first name, last name, or ID number
     public List<StudentEntity> searchStudents(String keyword) {
         // Call the repository method to perform the search
@@ -125,6 +98,17 @@ public class StudentService implements UserDetailsService {
         return studentRepository.findByDepartmentAndYearLevel(department, yearLevel);
     }
 
+    public StudentEntity getIdNumber(String idNumber) {
+        return studentRepository.findByIdNumber(idNumber)
+                .orElseThrow(() -> new NoSuchElementException("Student not found with ID: " + idNumber));
+    }
+
+    //get all non-archived accounts
+    public List<StudentEntity> getNonArchivedStudents() {
+        return studentRepository.findByArchived(false);
+    }
+
+
     @Transactional
     public String uploadImage(int id, MultipartFile file) {
         if (file.isEmpty()) {
@@ -145,11 +129,6 @@ public class StudentService implements UserDetailsService {
         }
     }
 
-    public StudentEntity getIdNumber(String idNumber) {
-        return studentRepository.findByIdNumber(idNumber)
-                .orElseThrow(() -> new NoSuchElementException("Student not found with ID: " + idNumber));
-    }
-
 
 
 
@@ -168,10 +147,4 @@ public class StudentService implements UserDetailsService {
         return ImageUtils.decompressImage(student.getStudentProfile());
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String idNumber) throws UsernameNotFoundException {
-        StudentEntity student = studentRepository.findByIdNumber(idNumber)
-                .orElseThrow(() -> new UsernameNotFoundException("Student not found with ID: " + idNumber));
-        return null;
-    }
 }
