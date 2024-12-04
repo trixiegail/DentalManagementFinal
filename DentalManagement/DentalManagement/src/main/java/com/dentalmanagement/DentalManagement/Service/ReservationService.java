@@ -1,19 +1,19 @@
 package com.dentalmanagement.DentalManagement.Service;
 
-import com.dentalmanagement.DentalManagement.Entity.Reservation;
-import com.dentalmanagement.DentalManagement.DTO.ReservationRequest;
-import com.dentalmanagement.DentalManagement.Entity.Event;
-import com.dentalmanagement.DentalManagement.Entity.Patient;
-import com.dentalmanagement.DentalManagement.Repository.ReservationRepository;
-import com.dentalmanagement.DentalManagement.Repository.EventRepository;
-import com.dentalmanagement.DentalManagement.Repository.PatientRepository;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.List;
-import java.util.NoSuchElementException;
+import com.dentalmanagement.DentalManagement.DTO.ReservationRequest;
+import com.dentalmanagement.DentalManagement.Entity.Event;
+import com.dentalmanagement.DentalManagement.Entity.Patient;
+import com.dentalmanagement.DentalManagement.Entity.Reservation;
+import com.dentalmanagement.DentalManagement.Repository.EventRepository;
+import com.dentalmanagement.DentalManagement.Repository.PatientRepository;
+import com.dentalmanagement.DentalManagement.Repository.ReservationRepository;
 
 @Service
 public class ReservationService {
@@ -47,6 +47,11 @@ public class ReservationService {
                 }
 
                 eventRepository.save(foundEvent); // Save the updated event
+
+                // Ensure department is set in the reservation
+                if (reservationDetails.getDepartment() == null || reservationDetails.getDepartment().isEmpty()) {
+                    throw new IllegalStateException("Department is required for a reservation.");
+                }
 
                 // Set the event details for the reservation and save it
                 reservationDetails.setDate(foundEvent.getDate());
@@ -110,6 +115,7 @@ public class ReservationService {
                 reservation.setFullName(request.getFullName());
                 reservation.setProgram(request.getProgram());
                 reservation.setYearLevel(request.getYearLevel());
+                reservation.setDepartment(request.getDepartment());
                 reservation.setEvent(foundEvent);
 
                 reservationRepository.save(reservation);
@@ -190,6 +196,7 @@ public class ReservationService {
             patient.setStudentIdNumber(reservation.getStudentIdNumber());
             patient.setProgram(reservation.getProgram());
             patient.setYearLevel(reservation.getYearLevel());
+            patient.setDepartment(reservation.getDepartment());
             patient.setDate(reservation.getDate());
             patient.setTime(reservation.getTime());
 
