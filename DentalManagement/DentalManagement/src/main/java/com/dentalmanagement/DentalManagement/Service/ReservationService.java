@@ -125,7 +125,7 @@ public class ReservationService {
                 throw new IllegalStateException("No available slots for this event.");
             }
         }
-
+        System.out.println("Reservation Request Email: " + request.getEmail());
         return false;
     }
 
