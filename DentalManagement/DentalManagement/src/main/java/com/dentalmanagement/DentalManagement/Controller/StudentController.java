@@ -72,7 +72,7 @@ public class StudentController {
     // Read all student records in tblstudent
     @GetMapping("/getAllStudents")
     public List<StudentEntity> getAllStudents(){
-        return studservice.getAllStudents();
+        return studservice.getAllStudent();
     }
 
     // Update a student record

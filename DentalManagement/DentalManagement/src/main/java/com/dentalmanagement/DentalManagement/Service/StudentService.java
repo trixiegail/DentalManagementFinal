@@ -31,7 +31,7 @@ public class StudentService{
     }
 
     // Read all records in tblstudent
-    public List<StudentEntity> getAllStudents() {
+    public List<StudentEntity> getAllStudent() {
         return studentRepository.findAll();
     }
 
