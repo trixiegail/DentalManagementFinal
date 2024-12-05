@@ -21,6 +21,7 @@ public class Reservation {
     private String time;
     private String status; 
     private String department;
+    private String email;
     
 
     @ManyToOne(cascade = CascadeType.PERSIST) // Or CascadeType.ALL based on your requirement
@@ -105,5 +106,13 @@ public class Reservation {
 
     public void setEvent(Event event) {
         this.event = event;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

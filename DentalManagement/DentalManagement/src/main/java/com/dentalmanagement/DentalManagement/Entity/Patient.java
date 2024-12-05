@@ -19,6 +19,7 @@ public class Patient {
     private String department ;
     private String date;
     private String time;
+    private String email;
 
     // Getters and Setters
     public Long getId() {
@@ -84,5 +85,13 @@ public class Patient {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

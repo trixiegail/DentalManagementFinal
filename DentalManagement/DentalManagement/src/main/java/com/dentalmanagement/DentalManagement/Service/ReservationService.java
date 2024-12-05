@@ -199,6 +199,7 @@ public class ReservationService {
             patient.setDepartment(reservation.getDepartment());
             patient.setDate(reservation.getDate());
             patient.setTime(reservation.getTime());
+            patient.setEmail(reservation.getEmail());
 
             // Save the patient to the patient repository
             patientRepository.save(patient);
