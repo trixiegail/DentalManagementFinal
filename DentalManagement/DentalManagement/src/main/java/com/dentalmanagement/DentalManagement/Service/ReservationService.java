@@ -116,6 +116,7 @@ public class ReservationService {
                 reservation.setProgram(request.getProgram());
                 reservation.setYearLevel(request.getYearLevel());
                 reservation.setDepartment(request.getDepartment());
+                reservation.setEmail(request.getEmail());
                 reservation.setEvent(foundEvent);
 
                 reservationRepository.save(reservation);
