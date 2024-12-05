@@ -20,9 +20,11 @@ public class EmailController {
     // Endpoint for sending email
     @GetMapping("/send-email")
     public String sendEmail() {
-        sendEmailService.sendEmail("dentalcapstone5@gmail.com", "This is a test email", "Test Email");
+        sendEmailService.sendEmail("dentalcapstone5@outlook.com", "This is a test email", "Test Email");
         return "Email sent successfully";
     }
+
+
 
     @PostMapping("/notify-approval")
     public String notifyApproval(@RequestParam String email) {
