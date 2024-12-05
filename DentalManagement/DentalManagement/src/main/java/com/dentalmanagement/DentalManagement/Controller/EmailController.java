@@ -22,6 +22,15 @@ public class EmailController {
 
     @PostMapping("/send-email/{email}")
     public String sendMail(@PathVariable String email, @RequestBody Email emailBody){
+        if (email == null || email.isEmpty()) {
+            return "Invalid email address";
+        }
+        if (emailBody == null || emailBody.getSubject() == null || emailBody.getMessage() == null) {
+            return "Invalid email body";
+        }
+        System.out.println("Email: " + email);
+        System.out.println("Subject: " + emailBody.getSubject());
+        System.out.println("Message: " + emailBody.getMessage());
         sendEmailService.sendMail(email, emailBody);
         return "Email sent successfully";
     }
