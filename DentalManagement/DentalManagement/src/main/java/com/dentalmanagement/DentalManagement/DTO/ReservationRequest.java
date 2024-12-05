@@ -7,6 +7,7 @@ public class ReservationRequest {
     private String yearLevel;
     private String date;
     private String time;
+    private String department;
     
 
     // Getters and Setters
@@ -57,5 +58,13 @@ public class ReservationRequest {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
     }
 }

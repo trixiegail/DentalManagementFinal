@@ -16,6 +16,7 @@ public class Patient {
     private String fullName;
     private String program;
     private String yearLevel;
+    private String department ;
     private String date;
     private String time;
 
@@ -59,6 +60,15 @@ public class Patient {
     public void setYearLevel(String yearLevel) {
         this.yearLevel = yearLevel;
     }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
 
     public String getDate() {
         return date;

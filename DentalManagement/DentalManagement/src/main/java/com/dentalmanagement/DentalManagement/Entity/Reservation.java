@@ -20,6 +20,7 @@ public class Reservation {
     private String date;
     private String time;
     private String status; 
+    private String department;
     
 
     @ManyToOne(cascade = CascadeType.PERSIST) // Or CascadeType.ALL based on your requirement
@@ -88,6 +89,14 @@ public class Reservation {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
     }
 
     public Event getEvent() {
