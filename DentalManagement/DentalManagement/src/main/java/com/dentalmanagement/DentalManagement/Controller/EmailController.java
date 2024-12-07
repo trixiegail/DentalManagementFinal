@@ -20,32 +20,36 @@ public class EmailController {
 //        return "Email sent successfully";
 //    }
 
+//    @PostMapping("/send-email/{email}")
+//    public String sendMail(@PathVariable String email, @RequestBody Email emailBody){
+//        if (email == null || email.isEmpty()) {
+//            return "Invalid email address";
+//        }
+//        if (emailBody == null || emailBody.getSubject() == null || emailBody.getMessage() == null) {
+//            return "Invalid email body";
+//        }
+//        System.out.println("Email: " + email);
+//        System.out.println("Subject: " + emailBody.getSubject());
+//        System.out.println("Message: " + emailBody.getMessage());
+//        sendEmailService.sendMail(email, emailBody);
+//        return "Email sent successfully";
+//    }
+
     @PostMapping("/send-email/{email}")
-    public String sendMail(@PathVariable String email, @RequestBody Email emailBody){
+    public String sendMail(@PathVariable String email, @RequestBody Email emailBody) {
         if (email == null || email.isEmpty()) {
             return "Invalid email address";
         }
         if (emailBody == null || emailBody.getSubject() == null || emailBody.getMessage() == null) {
             return "Invalid email body";
         }
-        System.out.println("Email: " + email);
-        System.out.println("Subject: " + emailBody.getSubject());
-        System.out.println("Message: " + emailBody.getMessage());
-        sendEmailService.sendMail(email, emailBody);
-        return "Email sent successfully";
+        try {
+            sendEmailService.sendMail(email, emailBody);
+            return "Email sent successfully";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Failed to send email: " + e.getMessage();
+        }
     }
 
-
-
-//    @PostMapping("/notify-approval")
-//    public String notifyApproval(@RequestParam String email) {
-//        sendEmailService.sendEmail(email, "Approval Notification", "You have been approved for your requested checkup.");
-//        return "Approval email sent successfully";
-//    }
-//
-//    @PostMapping("/notify-rejection")
-//    public String notifyRejection(@RequestParam String email) {
-//        sendEmailService.sendEmail(email, "Rejection Notification", "We regret to inform you that your request has been declined.");
-//        return "Rejection email sent successfully";
-//    }
 }
