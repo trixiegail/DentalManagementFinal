@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import com.dentalmanagement.DentalManagement.Entity.StaffEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -101,6 +102,13 @@ public class NurseController {
         List<NurseEntity> archivedNurses = nurserepo.findByArchivedAndFirstnameContainingIgnoreCaseOrLastnameContainingIgnoreCaseOrIdNumberContaining(
                 true, keyword, keyword, keyword);
         return ResponseEntity.ok(archivedNurses);
+    }
+
+    // Search for nurses by keyword
+    @GetMapping("/searchNurses")
+    public ResponseEntity<List<NurseEntity>> searchNurses(@RequestParam String keyword) {
+        List<NurseEntity> nurse = nurseservice.searchNurse(keyword);
+        return ResponseEntity.ok(nurse);
     }
 
     @PostMapping("/uploadProfilePicture/{nurseId}")
