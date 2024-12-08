@@ -31,7 +31,7 @@ public class SendEmailService {
     public void sendMail(String recipient, Email emailBody) {
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true,  "UTF-8");
 
             // Set the sender email and name
             helper.setFrom("dentalcapstone5@gmail.com", "Dental Management"); // Set your sender's email and display name
