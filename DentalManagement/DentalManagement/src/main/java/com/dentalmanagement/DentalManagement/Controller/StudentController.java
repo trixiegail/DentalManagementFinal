@@ -1,9 +1,9 @@
 package com.dentalmanagement.DentalManagement.Controller;
 
 import java.io.IOException;
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+//import java.sql.Date;
+//import java.text.ParseException;
+//import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -48,8 +48,8 @@ public class StudentController {
     @Autowired
     private ToothStatusService toothStatusService;
 
-    @Autowired
-    private ToothStatusRepository toothStatusRepository;
+//    @Autowired
+//    private ToothStatusRepository toothStatusRepository;
 
 
     // Endpoint for student authentication

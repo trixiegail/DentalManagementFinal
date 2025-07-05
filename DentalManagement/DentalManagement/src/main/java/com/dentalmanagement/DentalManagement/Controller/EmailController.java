@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/email")
+@CrossOrigin(origins = "http://localhost:5173")
 public class EmailController {
     @Autowired
     private SendEmailService sendEmailService;
@@ -35,4 +36,48 @@ public class EmailController {
     }
 
 }
+
+
+//import com.dentalmanagement.DentalManagement.Entity.Email;
+//import com.dentalmanagement.DentalManagement.Service.SendEmailService;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.http.ResponseEntity;
+//import org.springframework.web.bind.annotation.*;
+//
+//@RestController
+//@RequestMapping("/email")
+//@CrossOrigin(origins = "http://localhost:5173")
+//public class EmailController {
+//    @Autowired
+//    private SendEmailService sendEmailService;
+//
+//    @PostMapping("/send-email/{email}")
+//    public ResponseEntity<?> sendMail(@PathVariable String email, @RequestBody Email emailBody) {
+//        // Validate email
+//        if (email == null || email.isEmpty()) {
+//            return ResponseEntity.badRequest().body("Invalid email address");
+//        }
+//
+//        // Validate email body
+//        if (emailBody == null || emailBody.getSubject() == null || emailBody.getMessage() == null) {
+//            return ResponseEntity.badRequest().body("Invalid email body");
+//        }
+//
+//        try {
+//            // Log the email details for debugging
+//            System.out.println("Sending email to: " + email);
+//            System.out.println("Subject: " + emailBody.getSubject());
+//            System.out.println("Message: " + emailBody.getMessage());
+//
+//            // Send the email
+//            sendEmailService.sendMail(email, emailBody);
+//            return ResponseEntity.ok("Email sent successfully");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            // Return a more detailed error response
+//            return ResponseEntity.internalServerError()
+//                    .body("Failed to send email: " + e.getMessage());
+//        }
+//    }
+//}
 

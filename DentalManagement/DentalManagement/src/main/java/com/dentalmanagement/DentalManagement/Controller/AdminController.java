@@ -12,7 +12,8 @@ import com.dentalmanagement.DentalManagement.Service.AdminService;
 
 @RestController
 @RequestMapping("/admin")
-@CrossOrigin(origins = "https://projectyey.vercel.app/")
+//@CrossOrigin(origins = "https://projectyey.vercel.app/")
+@CrossOrigin(origins = "http://localhost:5173") // Update with the port your Vite server is running on
 public class AdminController {
 
     private final AdminService adminService;
